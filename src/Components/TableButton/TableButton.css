@@ -1,0 +1,7 @@
+.table-btn {
+    background-color: var(--button-white-color);
+    border:none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+}

@@ -1,0 +1,30 @@
+.outlined-btn {
+    border: 1px solid var(--secondary-button-border);
+    border-radius: 2px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    width: 180px;
+    height: 35px;
+    margin-left: 1rem;
+    font-size:11px;
+    padding: 0.2rem;
+    color: var(--main-text-color);
+}
+
+.outlined-btn p{
+    margin-left: 5px;
+}
+
+.outlined-btn svg {
+    color: var(--main-green-color);
+}
+
+.outlined-btn:hover {
+    background-color: var(--main-green-color);
+    color: white; 
+}
+
+.outlined-btn:hover svg {
+    color: white;
+}

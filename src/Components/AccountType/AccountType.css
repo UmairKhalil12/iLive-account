@@ -1,0 +1,5 @@
+.account-type {
+    padding: 0.3rem;
+    background-color: var(--main-text-color);
+    color: var(--secondary-text-color);
+}

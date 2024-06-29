@@ -1,0 +1,29 @@
+.main-navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--main-background-color);
+}
+
+.navbar-title-icon {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 15%;
+}
+
+.navbar-title-icon p {
+    font-size: x-large;
+    font-weight: 500;
+}
+
+.btn-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sun-svg {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: #FFB62E;
+}

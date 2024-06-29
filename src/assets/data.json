@@ -1,0 +1,130 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Umair",
+            "age": 21,
+            "gender": "Male"
+        },
+        {
+            "id": 2,
+            "name": "Saad",
+            "age": 28,
+            "gender": "Male"
+        },
+        {
+            "id": 3,
+            "name": "Shaeel",
+            "age": 22,
+            "gender": "Male"
+        },
+        {
+            "id": 4,
+            "name": "Ayesha",
+            "age": 22,
+            "gender": "Female"
+        },
+        {
+            "id": 5,
+            "name": "Zainab",
+            "age": 18,
+            "gender": "Female"
+        },
+        {
+            "id": 6,
+            "name": "Laiba",
+            "age": 19,
+            "gender": "Female"
+        },
+        {
+            "id": 7,
+            "name": "Ahmed",
+            "age": 24,
+            "gender": "Male"
+        },
+        {
+            "id": 8,
+            "name": "Sara",
+            "age": 27,
+            "gender": "Female"
+        },
+        {
+            "id": 9,
+            "name": "Hassan",
+            "age": 31,
+            "gender": "Male"
+        },
+        {
+            "id": 10,
+            "name": "Fatima",
+            "age": 25,
+            "gender": "Female"
+        },
+        {
+            "id": 11,
+            "name": "Ali",
+            "age": 22,
+            "gender": "Male"
+        },
+        {
+            "id": 12,
+            "name": "Nadia",
+            "age": 20,
+            "gender": "Female"
+        },
+        {
+            "id": 13,
+            "name": "Usman",
+            "age": 29,
+            "gender": "Male"
+        },
+        {
+            "id": 14,
+            "name": "Amina",
+            "age": 23,
+            "gender": "Female"
+        },
+        {
+            "id": 15,
+            "name": "Omar",
+            "age": 26,
+            "gender": "Male"
+        },
+        {
+            "id": 16,
+            "name": "Zoya",
+            "age": 30,
+            "gender": "Female"
+        },
+        {
+            "id": 17,
+            "name": "Farhan",
+            "age": 28,
+            "gender": "Male"
+        },
+        {
+            "id": 18,
+            "name": "Sana",
+            "age": 24,
+            "gender": "Female"
+        },
+        {
+            "id": 19,
+            "name": "Tariq",
+            "age": 33,
+            "gender": "Male"
+        },
+        {
+            "id": 20,
+            "name": "Maira",
+            "age": 21,
+            "gender": "Female"
+        },
+        {
+            "id": 21,
+            "name": "Imran",
+            "age": 27,
+            "gender": "Male"
+        }
+    ]
+}

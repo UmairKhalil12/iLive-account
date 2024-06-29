@@ -1,0 +1,49 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --main-green-color: #8FBD56;
+    --main-text-color: black;
+    --main-background-color: #F2F2F2;
+    --table-background-color: #FFFFFF;
+    --button-white-color: #EEEEEE;
+    --navbar-background-color: #F9F9F9;
+    --table-border-color: lightgray;
+    --secondary-button-border: gray; 
+    --button-hover-color: lightgray;
+    --secondary-text-color: white;
+    --secondary-border-color: black;
+    --main-color: #8FBD56;
+}
+
+.body-lightMode {
+    --main-green-color: #8FBD56;
+    --main-text-color: black;
+    --main-background-color: #F2F2F2;
+    --table-background-color: #FFFFFF;
+    --button-white-color: #EEEEEE;
+    --navbar-background-color: #F9F9F9;
+    --table-border-color: gray;
+    --secondary-button-border: gray; 
+    --button-hover-color: lightgray;
+    --secondary-text-color: white;
+    --secondary-border-color: black;
+    --main-color: #8FBD56;
+}
+
+.body-darkMode {
+    --main-green-color: #8FBD56;
+    --main-text-color:lightgray; 
+    --main-background-color: #3B3B41;
+    --table-background-color: #323236;
+    --button-white-color: #EEEEEE;
+    --navbar-background-color: #232326;
+    --table-border-color: gray;
+    --secondary-button-border: gray; 
+    --button-hover-color: lightgray;
+    --secondary-text-color: white;
+    --secondary-border-color: black;
+    --main-color: #8FBD56;
+}

@@ -1,0 +1,11 @@
+.action-btn{
+    background-color: var(--button-white-color);
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-btn:hover{
+    background-color: var(--button-hover-color);
+}

@@ -1,0 +1,88 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    border: 0.5px solid var(--table-border-color);
+    background-color: var(--table-background-color);
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 0;
+}
+
+.sub-container{
+    width: 100%;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-text-color);
+}
+
+.table {
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+}
+
+.table td,
+.table th {
+    border-bottom: 0.8px solid var(--table-border-color);
+    padding: 8px;
+}
+
+.table th {
+    border: 0.8px solid var(--table-border-color);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.pageIndex {
+    padding: 0.5rem 0.75rem;
+    border-radius: 5px;
+    background-color: var(--main-green-color);
+}
+
+.action-btn-container {
+    margin-left: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-bottom: 1rem;
+    width: 15%;
+}
+
+.action-btn-container button{
+    margin-left: 5px;
+}
+
+.search-div {
+    display: flex;
+    text-align: right;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 5px;
+    padding-bottom: 1rem;
+}
+
+.search-div label{
+    color: var(--main-text-color);
+}
+
+.search-input {
+    height: 30px;
+    width: 200px;
+    background-color: transparent;
+    border: 0.5px solid var(--table-border-color);
+    border-radius: 5px;
+}
