@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import "./Navbar.css"
 import { RiMenu2Fill } from "react-icons/ri";
 import Button from '../Button/Button';
@@ -14,8 +14,6 @@ export default function Navbar() {
     const color = useSelector((state) => state.user.color);
     const dispatch = useDispatch();
 
-    console.log("navbar ", color);
-
     const toggleColor = () => {
         dispatch(colorInfo(!color));
     };
@@ -28,11 +26,13 @@ export default function Navbar() {
             </div>
 
             <div className='btn-nav'>
-                <Button text='Saztec EPZ' logo={<LuFactory size={25} />} />
-                <Button text='Export Processing Zone, Karachi Plot # 4 & 5, Sector C-V, Phase I' logo={<IoLocationSharp size={50} />} />
-                <Button text='Saztex Main' logo={<FaBuildingColumns size={25} />} />
+                <div className='fact-info'>
+                    <Button text='Saztec EPZ' logo={<LuFactory size={25} />} />
+                    <Button text='Export Processing Zone, Karachi Plot # 4 & 5, Sector C-V, Phase I' logo={<IoLocationSharp size={50} />} />
+                    <Button text='Saztex Main' logo={<FaBuildingColumns size={25} />} />
+                </div>
                 {color ? <IoMdMoon size={25} onClick={toggleColor} className='sun-svg' /> :
-                    <MdLightMode size={25} onClick={toggleColor} className='sun-svg' /> 
+                    <MdLightMode size={25} onClick={toggleColor} className='sun-svg' />
                 }
             </div>
         </div>

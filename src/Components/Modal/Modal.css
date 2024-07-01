@@ -1,0 +1,88 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: var(--modal-overlay);
+
+}
+
+/* Content styles */
+.modal-content {
+    background: var(--modal-background-color);
+    border-radius: 5px;
+    position: relative;
+    width: 40%;
+    border-radius: 5px;
+    color: var(--main-text-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--main-text-color);
+}
+
+
+.modal-title-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid var(--table-border-color);
+    position:sticky;
+    left: 0;
+    top: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    width: 96.5%;
+    background-color: var(--modal-background-color);
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.cancel-save-btn{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 98.9%;
+    border-top: 0.5px solid var(--table-border-color);
+    position: sticky;
+    /* padding:0.25rem; */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 0.25rem;
+    left:0;
+    bottom:0;
+    background-color: var(--modal-background-color);
+
+}
+
+.cancel-btn {
+    border: 0.5px solid var(--table-border-color);
+    background-color: transparent;
+    color: var(--main-text-color);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.save-btn {
+    border: none;
+    background-color: var(--main-green-color);
+    padding: 0.5rem;
+    color: var(--secondary-text-color);
+    border-radius: 5px;
+    margin-left: 0.5rem;
+}

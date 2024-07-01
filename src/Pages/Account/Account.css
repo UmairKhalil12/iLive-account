@@ -1,21 +1,17 @@
-.accounting-page{
+.accounting-page {
     min-height: 100vh;
     height: 100%;
     background-color: var(--main-background-color);
-    padding-left: 5%;
+    /* padding-left: 5rem; */
+    /* width: 100%; */
+    /* padding: 1rem; */
+    /* padding-left: 5%; */
 }
 
-.select-add{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+.container-1{
+    padding: 1rem;
 }
 
-.select-account{
-    width: 350px;
-    background-color: transparent;
-    height: 30px;
-    color: var(--main-text-color);
+@media screen and (max-width : 550px) {
+ 
 }

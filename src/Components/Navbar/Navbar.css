@@ -13,10 +13,16 @@
 
 .navbar-title-icon p {
     font-size: x-large;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .btn-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fact-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,4 +32,10 @@
     margin-left: 1rem;
     margin-right: 1rem;
     color: #FFB62E;
+}
+
+@media screen and (max-width: 550px) {
+    .fact-info {
+        display: none;
+    }
 }

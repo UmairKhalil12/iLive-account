@@ -1,0 +1,14 @@
+.input-form {
+    width: 97%;
+    background: transparent;
+    border: 0.5px solid var(--table-border-color);
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 8px;
+    font-family: var(--font-family-sans-serif);
+}
+
+label{
+    font-size: 14px;
+    font-family: var(--font-family-sans-serif);
+}

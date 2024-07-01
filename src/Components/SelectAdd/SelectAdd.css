@@ -1,0 +1,63 @@
+.select-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-right: 2.5rem;
+    background: transparent;
+    width: inherit;
+}
+
+.select-arrow {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.select-account {
+    width: 450px;
+    background-color: transparent;
+    height: 30px;
+    color: var(--main-text-color);
+}
+
+.arrow-btn {
+    background-color: var(--main-green-color);
+    margin-left: 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.add-account-btn {
+    background-color: var(--main-green-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    width: 150px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 8px var(--box-shadow-account-btn);
+}
+
+@media screen and (max-width : 550px) {
+    .select-account {
+        width: 150px;
+    }
+
+    .select-add {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .select-arrow {
+        margin: 1rem;
+    }
+}

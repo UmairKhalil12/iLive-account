@@ -1,0 +1,44 @@
+/* Form.css */
+
+.add-main-account {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.is-active {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 20%;
+}
+
+.is-active p {
+    margin-left: 0.5rem;
+}
+
+.hr-line {
+    border: 0.5px solid var(--table-border-color);
+}
+
+.select-group, .select-currency {
+    width: 100%;
+    background: transparent;
+    color: var(--main-text-color);
+    height: 35px;
+    border-radius: 5px;
+    font-family: var(--font-family-sans-serif);
+}
+
+.textarea {
+    width: 97%;
+    background: transparent;
+    color: var(--main-text-color);
+    height: 30px;   
+    border-radius: 5px;
+    padding-left: 8px;
+}
+
+
+
+
+

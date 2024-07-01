@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 import './App.css';
-import Navbar from './Components/Navbar/Navbar';
+//import Navbar from './Components/Navbar/Navbar';
 import { useEffect } from 'react';
-import Account from './Pages/Account/Account';
+// import Account from './Pages/Account/Account';
+import Routing from './Routing/Routing';
 
 function App() {
   const color = useSelector((state) => state.user.color);
@@ -13,7 +14,8 @@ function App() {
 
   return (
     <div>
-      <Account /> 
+      {/* <Account />  */}
+      <Routing /> 
     </div>
   );
 }
