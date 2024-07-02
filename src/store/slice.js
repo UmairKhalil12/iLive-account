@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const initialState = {
     color: true,
+    expandedMenu: null, 
 }
 
 export const slice = createSlice({
@@ -12,10 +12,13 @@ export const slice = createSlice({
     reducers: {
         colorInfo: (state, action) => {
             state.color = action.payload;
+        },
+        setExpandedMenu: (state, action) => {
+            state.expandedMenu = action.payload;  
         }
     }
 })
 
-export const {colorInfo} = slice.actions; 
+export const { colorInfo, setExpandedMenu } = slice.actions; 
 
-export default slice.reducer; 
+export default slice.reducer;

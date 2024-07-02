@@ -1,30 +1,57 @@
 import React from 'react';
 import "./Table.css";
 import { useTable, useSortBy, usePagination } from 'react-table';
-import { FaSortUp } from "react-icons/fa";
-import { FaSortDown } from "react-icons/fa";
+import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
-import data from "../../assets/data.json"
+import data from "../../assets/data.json";
 import ActionButton from "../ActionButton/ActionButton";
 import TableButton from '../TableButton/TableButton';
+import { IoEyeOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
+import AccountType from "../AccountType/AccountType"
 
 export default function Table() {
     const columns = React.useMemo(() => [
         {
-            Header: "ID",
-            accessor: "id"
+            Header: "Account Code",
+            accessor: "Account Code"
         },
         {
-            Header: "Name",
-            accessor: "name"
+            Header: "Account Name",
+            accessor: "Account Name"
         },
         {
-            Header: "Age",
-            accessor: "age"
+            Header: "Currency",
+            accessor: "Currency"
         },
         {
-            Header: "Gender",
-            accessor: "gender"
+            Header: "Level",
+            accessor: "Level"
+        },
+        {
+            Header: "Account Type",
+            accessor: "Account Type",
+            Cell: ({ cell: { value } }) => (
+                <AccountType text={value} />
+            )
+        },
+        {
+            Header: "Group",
+            accessor: "Group"
+        },
+        {
+            Header: "Child Account",
+            accessor: "Child Account"
+        },
+        {
+            Header: "Actions",
+            accessor: "Actions",
+            Cell: ({ row }) => (
+                <div className="action-icons">
+                    <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
+                    <IoEyeOutline style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
+                </div>
+            )
         }
     ], []);
 
@@ -33,7 +60,7 @@ export default function Table() {
         canNextPage, canPreviousPage, state: { pageIndex }
     } = useTable({
         columns,
-        data: data.data
+        data: data.data || []
     }, useSortBy, usePagination);
 
     return (
@@ -50,8 +77,7 @@ export default function Table() {
                         <input
                             className='search-input'
                             type='text'
-                        ></input>
-
+                        />
                     </div>
                 </div>
                 <div className='table-container'>
@@ -60,11 +86,11 @@ export default function Table() {
                             {headerGroups.map(headerGroup => (
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                        <th {...column.getHeaderProps(column.getSortByToggleProps())} style={{ alignItems: 'center' }}>
                                             {column.render('Header')}
                                             {column.isSorted ? (
-                                                <span>{column.isSortedDesc ? <FaSortDown /> : <FaSortUp />}</span>
-                                            ) : <TiArrowUnsorted />}
+                                                <span>{column.isSortedDesc ? <FaSortDown style={{ marginBottom: '-2px' }} /> : <FaSortUp style={{ marginBottom: '-2px' }} />}</span>
+                                            ) : <TiArrowUnsorted style={{ marginBottom: '-2px' }} />}
                                         </th>
                                     ))}
                                 </tr>

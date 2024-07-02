@@ -2,10 +2,14 @@
     min-height: 100vh;
     height: 100%;
     background-color: var(--main-background-color);
-    /* padding-left: 5rem; */
-    /* width: 100%; */
-    /* padding: 1rem; */
-    /* padding-left: 5%; */
+    padding-left: 4.7%;
+}
+
+.accountig-page-margin{
+    min-height: 100vh;
+    height: 100%;
+    background-color: var(--main-background-color);
+    padding-left: 230px;   
 }
 
 .container-1{

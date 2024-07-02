@@ -1,5 +1,8 @@
 .account-type {
     padding: 0.3rem;
-    background-color: var(--main-text-color);
+    background-color: var(--main-green-color);
     color: var(--secondary-text-color);
+    border-radius: 35px;
+    width: 60px;
+    text-align: center;
 }

@@ -26,12 +26,12 @@ body {
     --table-background-color: #FFFFFF;
     --button-white-color: #EEEEEE;
     --navbar-background-color: #F9F9F9;
+    --navbar-footer-color : #FFFFFF;
     --table-border-color: gray;
     --secondary-button-border: gray;
     --button-hover-color: lightgray;
     --secondary-text-color: white;
     --secondary-border-color: black;
- 
     --main-color: #8FBD56;
     --box-shadow-account-btn: rgba(0, 0, 0, 0.5);
     --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -48,6 +48,7 @@ body {
     --table-background-color: #323236;
     --button-white-color: #EEEEEE;
     --navbar-background-color: #232326;
+    --navbar-footer-color: #2F2F33;
     --table-border-color: gray;
     --secondary-button-border: gray;
     --button-hover-color: lightgray;

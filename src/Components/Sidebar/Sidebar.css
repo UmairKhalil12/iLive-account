@@ -1,0 +1,119 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    width: 60px;
+    background-color: var(--navbar-background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    color: var(--main-text-color);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header,
+.sidebar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--navbar-background-color);
+}
+
+.sidebar-menu {
+    flex: 1;
+    margin-top: 20px;
+    position: relative;
+}
+
+.menu-item-main {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: var(--main-text-color);
+    cursor: pointer;
+    font-size: 16px;
+    justify-content: center;
+    position: relative;
+}
+
+/* Ensure the active class is visible even when submenu is closed */
+.menu-item-main.active {
+    color: var(--main-green-color);
+    border-left: 2px solid var(--main-green-color);
+    background-color: var(--active-menu-background); /* Optional: highlight background */
+}
+
+.submenu-panel {
+    position: fixed;
+    top: 0;
+    left: 60px;
+    width: 170px;
+    background-color: var(--navbar-footer-color);
+    padding: 10px;
+    z-index: 1001;
+    height: 100vh;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    overflow: hidden;
+}
+
+.submenu-panel.show {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu-arrow {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: var(--main-text-color);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.submenu-item.has-nested-submenu {
+    position: relative;
+}
+
+.submenu-item.has-nested-submenu .menu-arrow {
+    display: flex;
+    align-items: center;
+}
+
+.nested-submenu {
+    padding: 10px;
+    background-color: var(--navbar-footer-color);
+    overflow: hidden;
+    display: none;
+    font-size: small;
+}
+
+.nested-submenu.show {
+    transform: scaleY(1);
+    display: block;
+}
+
+.submenu-menu-text-icon {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 11px;
+    padding: 4px;
+}

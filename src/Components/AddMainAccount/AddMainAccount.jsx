@@ -16,8 +16,8 @@ export default function AddMainAccount() {
     };
     return (
         <div className='add-main-account'>
-            <form style={{padding : '0.5rem'}}>
-                <br/>
+            <form style={{ padding: '0.5rem' }}>
+                <br />
                 <select className='select-group' value={group} onChange={(e) => setGroup(e.target.value)}>
                     <option value="" disabled selected>Select Group</option>
                     <option value="Balance Sheet">Balance Sheet</option>
@@ -71,7 +71,7 @@ export default function AddMainAccount() {
 
                     <p>Is Active</p>
 
-                </div>                
+                </div>
             </form >
         </div>
 

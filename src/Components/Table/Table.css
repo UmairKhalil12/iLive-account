@@ -7,6 +7,8 @@
     border-radius: 5px;
     padding: 1rem;
     margin: 0;
+    font-family: var(--font-family-sans-serif);
+    font-size: 12px;
 }
 
 .sub-container {
@@ -38,6 +40,7 @@
     border: 0.8px solid var(--table-border-color);
     text-align: center;
     vertical-align: middle;
+    text-transform: uppercase;
 }
 
 .table-btn-container {
