@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 export default function Account() {
     const expandedMenu = useSelector((state) => state.user.expandedMenu);
-    
+
 
     return (
         <div className={expandedMenu === 1 || expandedMenu === 0 ? 'accountig-page-margin' : 'accounting-page'}  >

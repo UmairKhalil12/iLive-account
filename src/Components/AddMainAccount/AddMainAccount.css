@@ -3,6 +3,8 @@
 .add-main-account {
     width: 100%;
     margin: 0 auto;
+    max-height: 450px;
+    overflow-y: scroll;
 }
 
 .is-active {
@@ -20,25 +22,34 @@
     border: 0.5px solid var(--table-border-color);
 }
 
-.select-group, .select-currency {
+.select-group,
+.select-currency {
     width: 100%;
     background: transparent;
     color: var(--main-text-color);
     height: 35px;
     border-radius: 5px;
     font-family: var(--font-family-sans-serif);
+    margin-bottom: 1rem;
 }
 
 .textarea {
-    width: 97%;
-    background: transparent;
+    width: 100%;
+    background: var(--input-background);
     color: var(--main-text-color);
-    height: 30px;   
+    height: 30px;
     border-radius: 5px;
     padding-left: 8px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    padding-top: 3px;
 }
 
+.textarea:focus{
+    border: 0.5px solid var(--main-green-color);
+    outline: none;
+}
 
-
-
-
+.space{
+    padding: 0.25rem;
+}

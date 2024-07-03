@@ -8,6 +8,7 @@ export default function AddMainAccount() {
     const [currency, setCurrency] = useState("");
     const [positiveBalance, setPositiveBalance] = useState("");
     const [negativeBalance, setNegativeBalance] = useState("");
+    const [remarks, setRemarks] = useState("");
     const [isActive, setIsActive] = useState(false);
 
 
@@ -16,25 +17,28 @@ export default function AddMainAccount() {
     };
     return (
         <div className='add-main-account'>
-            <form style={{ padding: '0.5rem' }}>
-                <br />
+            <form style={{ padding: '1rem' }}>
+                <label className='label-form' >Group*</label> <div className='space'></div>
+
                 <select className='select-group' value={group} onChange={(e) => setGroup(e.target.value)}>
                     <option value="" disabled selected>Select Group</option>
                     <option value="Balance Sheet">Balance Sheet</option>
                     <option value="Profit & Loss">Profit & Loss</option>
-                </select>  <br /> <br />
+                </select>
+
                 <Input
                     label='Main Account Name'
                     placeholder="Main Account Name"
                     value={accountName}
                     onChange={(e) => { setAccountName(e.target.value) }}
-                /> <br />
+                />
 
+                <label className='label-form' >Base Currency*</label>  <div className='space'></div>
                 <select className='select-currency' value={currency} onChange={(e) => setCurrency(e.target.value)}>
                     <option value="" disabled selected>Select Currency</option>
                     <option value="Balance Sheet">Balance Sheet</option>
                     <option value="Profit & Loss">Profit & Loss</option>
-                </select> <br /> <br />
+                </select>
 
                 <Input
                     label="Positive Balance Symbol"
@@ -43,7 +47,6 @@ export default function AddMainAccount() {
                     onChange={(e) => setPositiveBalance(e.target.value)}
                 />
 
-                <br />
 
                 <Input
                     label="Negative Balance Symbol"
@@ -52,24 +55,23 @@ export default function AddMainAccount() {
                     onChange={(e) => setNegativeBalance(e.target.value)}
                 />
 
-                <br />
 
+                <label className='label-form' >Remarks*</label> <div className='space'></div>
 
-                <label>Remarks</label> <br /> <br />
+                <textarea placeholder='Remarks' className='textarea' value={remarks} onChange={(e) => setRemarks(e.target.value)} />
 
-                <textarea placeholder='Remarks' rows='2' className='textarea' />
-
-                <br /> <br />
 
                 <div className='is-active'>
-
                     <input
                         type="checkbox"
                         checked={isActive}
                         onChange={handleCheckboxChange}
+
                     />
 
-                    <p>Is Active</p>
+                    &nbsp; &nbsp;
+
+                    <label className='label-form'>Is Active</label>
 
                 </div>
             </form >

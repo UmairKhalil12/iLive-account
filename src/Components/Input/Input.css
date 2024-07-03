@@ -1,14 +1,22 @@
 .input-form {
-    width: 97%;
-    background: transparent;
-    border: 0.5px solid var(--table-border-color);
+    width: 100%;
+    background: var(--input-background);
+    border: none;
     height: 30px;
     border-radius: 5px;
     padding-left: 8px;
     font-family: var(--font-family-sans-serif);
+    margin-bottom: 1rem;
+    color: var(--main-text-color);
 }
 
-label{
-    font-size: 14px;
+.input-form:focus {
+    border: 0.5px solid var(--main-green-color);
+    outline: none;
+}
+
+.label-form {
+    font-size: 11px;
     font-family: var(--font-family-sans-serif);
+    color: var(--main-text-color);
 }

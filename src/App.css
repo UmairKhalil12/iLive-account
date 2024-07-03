@@ -38,6 +38,7 @@ body {
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --modal-background-color: #FFFFFF;
     --modal-overlay: rgba(255, 255, 255, 0.5);
+    --input-background : #FFFFFF;
 
 }
 
@@ -61,4 +62,5 @@ body {
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --modal-background-color: #323236;
     --modal-overlay: rgba(0, 0, 0, 0.5);
+    --input-background : #28282B;
 }

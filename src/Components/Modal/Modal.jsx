@@ -19,11 +19,11 @@ const Modal = ({ isOpen, onClose, children, title }) => {
                         &times;
                     </button>
                 </div>
-                {/* <br /> <br /> */}
+
                 {children}
 
                 <div className='cancel-save-btn'>
-                    <button className='cancel-btn'> Cancel </button>
+                    <button className='cancel-btn' onClick={onClose}> Cancel </button>
                     <button className='save-btn' > Save </button>
                 </div>
 

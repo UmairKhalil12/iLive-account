@@ -1,0 +1,24 @@
+.account-type_sub-account {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.check-input{
+    height: 1rem;
+}
+
+.check-input:checked {
+    outline: none;
+    accent-color: var(--main-green-color);
+}
+
+.check-subaccount-type{
+    display: flex;
+    align-items: center;
+}
+
+.check-subaccount-type label{
+    margin-left: 0.5rem;
+}
