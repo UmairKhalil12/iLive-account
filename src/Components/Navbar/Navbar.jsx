@@ -1,5 +1,5 @@
-import React from 'react'
-import "./Navbar.css"
+import React from 'react';
+import "./Navbar.css";
 import { RiMenu2Fill } from "react-icons/ri";
 import Button from '../Button/Button';
 import { LuFactory } from "react-icons/lu";
@@ -7,33 +7,45 @@ import { IoLocationSharp } from "react-icons/io5";
 import { FaBuildingColumns } from "react-icons/fa6";
 import { MdLightMode } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { colorInfo, setExpandedMenu } from '../../store/slice';
+import { colorInfo, setExpandedMenu, setIsSubmenuVisible } from '../../store/slice';
 import { IoMdMoon } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 
-
 export default function Navbar() {
     const color = useSelector((state) => state.user.color);
+    const expandedMenu = useSelector((state) => state.user.expandedMenu);
+    const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const dispatch = useDispatch();
 
     const toggleColor = () => {
         dispatch(colorInfo(!color));
     };
 
-    const expandedMenu = useSelector((state) => state.user.expandedMenu);
-    console.log(expandedMenu, 'account page expnd menu');
-
-    const index = expandedMenu === null ? 0 : expandedMenu;
-
     const toggleMenu = (index) => {
-        const isCurrentMenu = expandedMenu === index;
-        dispatch(setExpandedMenu(isCurrentMenu ? null : index));
+        if (expandedMenu === index && isSubmenuVisible) {
+            dispatch(setIsSubmenuVisible(false));
+        } else {
+            dispatch(setExpandedMenu(index));
+            dispatch(setIsSubmenuVisible(true));
+        }
     };
 
     return (
         <div className='main-navbar'>
             <div className='navbar-title-icon'>
-                {expandedMenu === 1 || expandedMenu === 0 ? <IoIosArrowBack style={{ color: 'var(--main-green-color)' }} size={25} onClick={() => toggleMenu(index)} /> : <RiMenu2Fill style={{ color: 'var(--main-green-color)' }} size={25} onClick={() => toggleMenu(index)} />}
+                {isSubmenuVisible ?
+                    <IoIosArrowBack
+                        style={{ color: 'var(--main-green-color)' }}
+                        size={25}
+                        onClick={() => toggleMenu(expandedMenu)}
+                    />
+                    :
+                    <RiMenu2Fill
+                        style={{ color: 'var(--main-green-color)' }}
+                        size={25}
+                        onClick={() => toggleMenu(expandedMenu)}
+                    />
+                }
                 <p style={{ color: "var(--main-text-color)" }} >Account List</p>
             </div>
 
@@ -48,5 +60,5 @@ export default function Navbar() {
                 }
             </div>
         </div>
-    )
+    );
 }

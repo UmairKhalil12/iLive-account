@@ -150,7 +150,6 @@ export default function Table() {
 
             // Add the first page
             pdf.addImage(imgData, 'PNG', MARGIN, position, imgWidth, imgHeight);
-            let yPosition = PAGE_HEIGHT - 2 * MARGIN;
             let heightLeftAfterPage = heightLeft;
 
             // Add additional pages if needed

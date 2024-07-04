@@ -39,6 +39,7 @@ body {
     --modal-background-color: #FFFFFF;
     --modal-overlay: rgba(255, 255, 255, 0.5);
     --input-background : #FFFFFF;
+    --color-mode-color :white;
 
 }
 
@@ -63,4 +64,5 @@ body {
     --modal-background-color: #323236;
     --modal-overlay: rgba(0, 0, 0, 0.5);
     --input-background : #28282B;
+    --color-mode-color : black;
 }

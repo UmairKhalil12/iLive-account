@@ -34,6 +34,11 @@
     color: #FFB62E;
 }
 
+.sun-svg:hover {
+    background-color: var(--color-mode-color);
+    border-radius: 12px;
+}
+
 @media screen and (max-width: 550px) {
     .fact-info {
         display: none;

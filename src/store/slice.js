@@ -1,24 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    color: true,
-    expandedMenu: null, 
-}
+    color: false,
+    expandedMenu: 0,
+    isSubmenuVisible: true, // Add this line
+};
 
-export const slice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState,
-
     reducers: {
         colorInfo: (state, action) => {
             state.color = action.payload;
         },
         setExpandedMenu: (state, action) => {
-            state.expandedMenu = action.payload;  
-        }
-    }
-})
+            state.expandedMenu = action.payload;
+        },
+        setIsSubmenuVisible: (state, action) => {
+            state.isSubmenuVisible = action.payload;
+        },
+    },
+});
 
-export const { colorInfo, setExpandedMenu } = slice.actions; 
-
-export default slice.reducer;
+export const { colorInfo, setExpandedMenu, setIsSubmenuVisible } = userSlice.actions;
+export default userSlice.reducer;

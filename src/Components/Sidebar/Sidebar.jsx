@@ -3,18 +3,16 @@ import { CiBoxList } from "react-icons/ci";
 import { MdPerson } from 'react-icons/md';
 import { MdOutlineAccountBalance } from "react-icons/md";
 import { useSelector, useDispatch } from 'react-redux';
-import { setExpandedMenu } from '../../store/slice';
+import { setExpandedMenu, setIsSubmenuVisible } from '../../store/slice';
 import { PiSquaresFourThin } from "react-icons/pi";
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './Sidebar.css';
 
-const Sidebar = () => {
+export default function Sidebar() {
     const dispatch = useDispatch();
     const expandedMenu = useSelector((state) => state.user.expandedMenu);
-
-    // State for nested submenus
+    const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const [nestedMenu, setNestedMenu] = useState(null);
-    const [activeMenu, setActiveMenu] = useState(null); // New state for active menu
 
     const menuItems = [
         {
@@ -48,11 +46,11 @@ const Sidebar = () => {
     ];
 
     const toggleMenu = (index) => {
-        const isCurrentMenu = expandedMenu === index;
-        dispatch(setExpandedMenu(isCurrentMenu ? null : index));
-        setActiveMenu(isCurrentMenu ? null : index);
-        if (isCurrentMenu) {
-            setNestedMenu(null);
+        if (expandedMenu === index && isSubmenuVisible) {
+            dispatch(setIsSubmenuVisible(false));
+        } else {
+            dispatch(setExpandedMenu(index));
+            dispatch(setIsSubmenuVisible(true));
         }
     };
 
@@ -63,18 +61,17 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="sidebar-header">
-                {/* Add header content if needed */}
             </div>
             <div className="sidebar-menu">
                 {menuItems.map((item, index) => (
                     <div key={index}>
                         <div
-                            className={`menu-item-main ${activeMenu === index ? 'active' : ''}`}
+                            className={`menu-item-main ${expandedMenu === index && isSubmenuVisible ? 'active' : ''}`}
                             onClick={() => toggleMenu(index)}
                         >
                             <span>{item.icon}</span>
                         </div>
-                        <div className={`submenu-panel ${expandedMenu === index ? 'show' : ''}`}>
+                        <div className={`submenu-panel ${expandedMenu === index && isSubmenuVisible ? 'show' : ''}`}>
                             <p className='heading-submenu'>{item.title}</p>
                             {item.submenu.map((subitem, subindex) => (
                                 <div key={subindex}>
@@ -115,6 +112,4 @@ const Sidebar = () => {
             </div>
         </div>
     );
-};
-
-export default Sidebar;
+}
