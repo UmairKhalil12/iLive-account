@@ -69,7 +69,7 @@ export default function Sidebar() {
                             className={`menu-item-main ${expandedMenu === index && isSubmenuVisible ? 'active' : ''}`}
                             onClick={() => toggleMenu(index)}
                         >
-                            <span>{item.icon}</span>
+                            <span >{item.icon}</span>
                         </div>
                         <div className={`submenu-panel ${expandedMenu === index && isSubmenuVisible ? 'show' : ''}`}>
                             <p className='heading-submenu'>{item.title}</p>
@@ -83,7 +83,7 @@ export default function Sidebar() {
                                             }
                                         }}
                                     >
-                                        {subitem.icon}
+                                        <span>{subitem.icon}</span>
                                         <p style={{ marginLeft: '5px' }}>{subitem.text}</p>
                                         {subitem.submenu && (
                                             <span className="menu-arrow">
