@@ -1,9 +1,9 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useState} from 'react';
 import "./AddMainAccount.css";
 import Input from '../Input/Input';
 import { GET_METHOD } from '../../api/api';
 
-const AddMainAccount = forwardRef(({ isOpen, onClose, title }, ref) => {
+const AddMainAccount = ({ isOpen, onClose, title }) => {
     const [accountName, setAccountName] = useState("");
     const [group, setGroup] = useState([]);
     const [currency, setCurrency] = useState([]);
@@ -14,10 +14,7 @@ const AddMainAccount = forwardRef(({ isOpen, onClose, title }, ref) => {
     const [remarks, setRemarks] = useState("");
     const [isActive, setIsActive] = useState(false);
 
-    useImperativeHandle(ref, () => ({
-        submitForm: handleSubmit,
-    }));
-
+   
     const handleCheckboxChange = (event) => {
         setIsActive(event.target.checked);
     };
@@ -54,8 +51,8 @@ const AddMainAccount = forwardRef(({ isOpen, onClose, title }, ref) => {
     // console.log("Positive Balance" , positiveBalance)
     // console.log("Negative balance" , negativeBalance);
     // console.log("remarks" , remarks);
-    console.log("currency", currency);
-    console.log("base currency", baseCurrency);
+    // console.log("currency", currency);
+    // console.log("base currency", baseCurrency);
     // console.log("isActive", isActive); 
 
     return (
@@ -132,6 +129,6 @@ const AddMainAccount = forwardRef(({ isOpen, onClose, title }, ref) => {
             </div>
         </div>
     );
-});
+};
 
 export default AddMainAccount;

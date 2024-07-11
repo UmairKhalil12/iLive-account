@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './Account.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import Table from '../../Components/Table/Table';
@@ -9,19 +9,17 @@ import { GET_METHOD } from '../../api/api';
 
 export default function Account() {
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
-    const [data , setData] = useState([]);
+    const [data, setData] = useState([]);
 
-    const getData = async()=>{
+    const getData = useCallback( async () => {
         const res = await GET_METHOD('/Api/AccountsApi/GetMainAccounts?LocationId=1&CampusId=1');
-        setData(res); 
-    }
+        setData(res);
+        console.log(data);
+    } , [data])
 
-    useEffect(()=>{
+    useEffect(() => {
         getData()
-    } , [data]) 
-
-    console.log(data); 
-    
+    }, [data , getData])
 
     return (
         <div className={isSubmenuVisible ? 'accountig-page-margin' : 'accounting-page'}  >
@@ -29,7 +27,7 @@ export default function Account() {
             <div className='container-1'>
                 <Navbar />
                 <SelectAdd accountType='Add Main Account' />
-                <Table data={data}/>
+                <Table data={data} />
             </div>
         </div>
     );

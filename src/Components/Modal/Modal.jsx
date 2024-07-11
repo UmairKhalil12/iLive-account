@@ -11,24 +11,24 @@
 //     };
 
 //     return (
-//         <div className="modal-overlay" onClick={handleOverlayClick}>
-//             <div className="modal-content">
-//                 <div className='modal-title-btn'>
-//                     <p className="modal-title" >{title} </p>
-//                     <button className="modal-close" onClick={onClose}>
-//                         &times;
-//                     </button>
-//                 </div>
+        // <div className="modal-overlay" onClick={handleOverlayClick}>
+        //     <div className="modal-content">
+        //         <div className='modal-title-btn'>
+        //             <p className="modal-title" >{title} </p>
+        //             <button className="modal-close" onClick={onClose}>
+        //                 &times;
+        //             </button>
+        //         </div>
 
-//                 {children}
+        //         {children}
 
-//                 <div className='cancel-save-btn'>
-//                     <button className='cancel-btn' onClick={onClose}> Cancel </button>
-//                     <button className='save-btn' type='submit' > Save </button>
-//                 </div>
+        //         <div className='cancel-save-btn'>
+        //             <button className='cancel-btn' onClick={onClose}> Cancel </button>
+        //             <button className='save-btn' type='submit' > Save </button>
+        //         </div>
 
-//             </div>
-//         </div>
+        //     </div>
+        // </div>
 //     );
 // };
 

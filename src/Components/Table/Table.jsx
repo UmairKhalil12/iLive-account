@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
@@ -13,16 +13,24 @@ import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import "./Table.css";
+import { useNavigate } from 'react-router-dom';
 
-export default function Table({data}) {
+export default function Table({ data }) {
 
+    const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');
+
+    const handleEye = useMemo(() => (mainAccountID, parentID, accountType) => {
+        // window.alert("pressing eye")
+        navigate(`/subaccount/${mainAccountID}/${parentID}/${accountType}`);
+    }, [navigate]);
+
 
     const columns = React.useMemo(() => [
         {
             Header: "Account Code",
-            accessor: "MainAccountGenId"
+            accessor: "MainAccountGenId" || "SubAccountGenId"
         },
         {
             Header: "Account Name",
@@ -57,11 +65,11 @@ export default function Table({data}) {
             Cell: ({ row }) => (
                 <div className="action-icons">
                     <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
-                    <IoEyeOutline style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
+                    <IoEyeOutline style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => handleEye(row?.original?.MainAccountId, 0, row?.original?.GroupId)} />
                 </div>
             )
         }
-    ], []);
+    ], [handleEye]);
 
     const {
         getTableProps, getTableBodyProps, headerGroups, page, prepareRow, nextPage, previousPage,
@@ -72,7 +80,7 @@ export default function Table({data}) {
     }, useSortBy, usePagination);
 
     const handleExport = () => {
-        const ws = XLSX.utils.json_to_sheet(data.data);
+        const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
         const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
