@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './SelectAdd.css'
 import { useNavigate } from 'react-router-dom';
 import { FiPlus } from "react-icons/fi";
-import Modal from '../Modal/Modal';
+// import Modal from '../Modal/Modal';
 import AddMainAccount from '../AddMainAccount/AddMainAccount';
 // import AddSubAccount from '../AddSubAccount/AddSubAccount';
 
@@ -47,9 +47,9 @@ export default function SelectAdd({ accountType }) {
 
             <button className='add-account-btn' onClick={openModal}> <FiPlus /> {accountType} </button>
 
-            <Modal onClose={closeModal} isOpen={isModalOpen} title="Main Account">
-                <AddMainAccount />
-            </Modal>
+
+            <AddMainAccount onClose={closeModal} isOpen={isModalOpen} title="Main Account" />
+
         </div>
     )
 }

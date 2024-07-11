@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
-import data from "../../assets/data.json";
+// import data from "../../assets/data.json";
 import ActionButton from "../ActionButton/ActionButton";
 import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
@@ -14,7 +14,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import "./Table.css";
 
-export default function Table() {
+export default function Table({data}) {
 
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');
@@ -22,34 +22,34 @@ export default function Table() {
     const columns = React.useMemo(() => [
         {
             Header: "Account Code",
-            accessor: "Account Code"
+            accessor: "MainAccountGenId"
         },
         {
             Header: "Account Name",
-            accessor: "Account Name"
+            accessor: "MainAccountName"
         },
         {
             Header: "Currency",
-            accessor: "Currency"
+            accessor: "CurrencyCode"
         },
         {
             Header: "Level",
-            accessor: "Level"
+            accessor: "AccountLevel"
         },
         {
             Header: "Account Type",
-            accessor: "Account Type",
+            accessor: "AccountType",
             Cell: ({ cell: { value } }) => (
                 <AccountType text={value} />
             )
         },
         {
             Header: "Group",
-            accessor: "Group"
+            accessor: "GroupName"
         },
         {
             Header: "Child Account",
-            accessor: "Child Account"
+            accessor: "SubAccountCount"
         },
         {
             Header: "Actions",
@@ -68,7 +68,7 @@ export default function Table() {
         canNextPage, canPreviousPage, state: { pageIndex }
     } = useTable({
         columns,
-        data: data.data || []
+        data: data || []
     }, useSortBy, usePagination);
 
     const handleExport = () => {
