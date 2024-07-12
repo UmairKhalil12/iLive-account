@@ -47,6 +47,7 @@
     box-shadow: 0 4px 8px var(--box-shadow-account-btn);
 }
 
+
 @media screen and (max-width : 550px) {
     .select-account {
         width: 150px;

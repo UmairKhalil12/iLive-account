@@ -1,11 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
-// import data from "../../assets/data.json";
 import ActionButton from "../ActionButton/ActionButton";
 import { IoEyeOutline } from "react-icons/io5";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiTrash } from "react-icons/ci";
 import AccountType from "../AccountType/AccountType";
 import TableButton from "../TableButton/TableButton";
 import * as XLSX from 'xlsx';
@@ -14,62 +13,118 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import "./Table.css";
 import { useNavigate } from 'react-router-dom';
+import { GET_METHOD } from '../../api/api';
+import AddSubAccount from '../AddSubAccount/AddSubAccount';
+import AddMainAccount from '../AddMainAccount/AddMainAccount';
 
 export default function Table({ data }) {
-
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState(null);
+    const [isSubAccount, setIsSubAccount] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
     const handleEye = useMemo(() => (mainAccountID, parentID, accountType) => {
-        // window.alert("pressing eye")
-        navigate(`/subaccount/${mainAccountID}/${parentID}/${accountType}`);
+        const finalParentID = parentID || 0; // Use 0 if parentID is falsy
+        navigate(`/subaccount/${mainAccountID}/${finalParentID}/${accountType}`);
     }, [navigate]);
+
+    const handleDelete = useCallback(async (id, isSubAccount) => {
+        const isConfirmed = window.confirm("Do you want to delete this account?");
+        if (isConfirmed) {
+            try {
+                const endpoint = isSubAccount
+                    ? `/Api/AccountsApi/deleteSubAccount?Id=${id}&LocationId=1&CampusId=1&UserId=10131`
+                    : `/Api/AccountsApi/deleteMainAccount?Id=${id}&LocationId=1&CampusId=1&UserId=10131`;
+                const res = await GET_METHOD(endpoint);
+                console.log(res, 'delete');
+            } catch (error) {
+                console.log(error.message);
+            }
+        } else {
+            console.log("Account deletion cancelled");
+        }
+    }, []);
+
+    const handleEdit = useCallback((subAccountId, mainAccountId, isSubAccount, groupId) => {
+        setIsSubAccount(isSubAccount);
+        setModalData({
+            subAccountId,
+            mainAccountId,
+            groupId,
+            data
+        });
+        openModal();
+    }, [data]);
 
 
     const columns = React.useMemo(() => [
         {
             Header: "Account Code",
-            accessor: "MainAccountGenId" || "SubAccountGenId"
+            accessor: (row) => row.MainAccountGenId || row.SubAccountGenId || "N/A",
         },
         {
             Header: "Account Name",
-            accessor: "MainAccountName"
+            accessor: (row) => row.SubAccountName || row.MainAccountName || "N/A",
         },
         {
             Header: "Currency",
-            accessor: "CurrencyCode"
+            accessor: (row) => row.CurrencyCode || "N/A",
         },
         {
             Header: "Level",
-            accessor: "AccountLevel"
+            accessor: (row) => row.AccountLevel || "N/A",
         },
         {
             Header: "Account Type",
-            accessor: "AccountType",
+            accessor: (row) => row.AccountType || "N/A",
             Cell: ({ cell: { value } }) => (
                 <AccountType text={value} />
             )
         },
         {
             Header: "Group",
-            accessor: "GroupName"
+            accessor: (row) => row.GroupName || "N/A",
         },
         {
             Header: "Child Account",
-            accessor: "SubAccountCount"
+            accessor: (row) => row.SubAccountCount
         },
         {
             Header: "Actions",
             accessor: "Actions",
             Cell: ({ row }) => (
                 <div className="action-icons">
-                    <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
-                    <IoEyeOutline style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => handleEye(row?.original?.MainAccountId, 0, row?.original?.GroupId)} />
+                    <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => handleEdit(row?.original?.SubAccountId || 0, row?.original?.MainAccountId, !!row?.original?.SubAccountId, row?.original?.GroupId)} />
+                    {row?.original?.AccountType === "Control" && (
+                        <IoEyeOutline
+                            style={{ cursor: 'pointer', marginRight: '15px' }}
+                            size={12}
+                            onClick={() => handleEye(
+                                row?.original?.MainAccountId,
+                                row?.original?.SubAccountId || 0,
+                                row?.original?.GroupId,
+                                row?.original?.TreeHTML
+                            )}
+                        />
+                    )}
+                    {row?.original?.SubAccountCount === 0 ? (
+                        <CiTrash
+                            onClick={() => handleDelete(
+                                row?.original?.SubAccountId || row?.original?.MainAccountId,
+                                !!row?.original?.SubAccountId
+                            )}
+                        />
+                    ) : null}
                 </div>
             )
         }
-    ], [handleEye]);
+    ], [handleEye, handleEdit, handleDelete]);
 
     const {
         getTableProps, getTableBodyProps, headerGroups, page, prepareRow, nextPage, previousPage,
@@ -94,7 +149,6 @@ export default function Table({ data }) {
             return;
         }
 
-        // Extract text content from the table
         const rows = table.querySelectorAll('tr');
         let text = '';
 
@@ -106,14 +160,12 @@ export default function Table({ data }) {
             text += rowText + '\n'; // New line for each row
         });
 
-        // Create a temporary textarea to hold the text content
         const textarea = document.createElement('textarea');
         textarea.style.position = 'absolute';
         textarea.style.left = '-9999px';
         textarea.value = text;
         document.body.appendChild(textarea);
 
-        // Select and copy the text
         textarea.select();
         try {
             const successful = document.execCommand('copy');
@@ -132,7 +184,6 @@ export default function Table({ data }) {
             setMessage('Failed to copy!');
         }
 
-        // Clean up
         document.body.removeChild(textarea);
     };
 
@@ -156,11 +207,9 @@ export default function Table({ data }) {
 
             let position = MARGIN;
 
-            // Add the first page
             pdf.addImage(imgData, 'PNG', MARGIN, position, imgWidth, imgHeight);
             let heightLeftAfterPage = heightLeft;
 
-            // Add additional pages if needed
             while (heightLeftAfterPage > 0) {
                 pdf.addPage();
                 pdf.addImage(imgData, 'PNG', MARGIN, -heightLeftAfterPage, imgWidth, imgHeight);
@@ -210,7 +259,9 @@ export default function Table({ data }) {
                                 return (
                                     <tr {...row.getRowProps()}>
                                         {row.cells.map(cell => (
-                                            <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                            <td {...cell.getCellProps()}>
+                                                {typeof cell.value === 'object' ? JSON.stringify(cell.value) : cell.render('Cell')}
+                                            </td>
                                         ))}
                                     </tr>
                                 );
@@ -227,6 +278,26 @@ export default function Table({ data }) {
                     <TableButton onClick={nextPage} disabled={!canNextPage} text="Next" />
                 </div>
             </div>
+            {/* Modals */}
+            {isModalOpen && isSubAccount && (
+                <AddSubAccount
+                    onClose={closeModal}
+                    isOpen={isModalOpen}
+                    title="Sub Account"
+                    GroupId={modalData.groupId}
+                    mainAccountID={modalData.mainAccountId}
+                    parentID={modalData.subAccountId}
+                    data={modalData.data}
+                />
+            )}
+            {isModalOpen && !isSubAccount && (
+                <AddMainAccount
+                    onClose={closeModal}
+                    isOpen={isModalOpen}
+                    title="Main Account"
+                    data={modalData.data}
+                />
+            )}
         </div>
     );
 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import "./AddMainAccount.css";
 import Input from '../Input/Input';
 import { GET_METHOD } from '../../api/api';
 
-const AddMainAccount = ({ isOpen, onClose, title }) => {
+const AddMainAccount = ({ isOpen, onClose, title, data }) => {
     const [accountName, setAccountName] = useState("");
     const [group, setGroup] = useState([]);
     const [currency, setCurrency] = useState([]);
@@ -13,8 +13,8 @@ const AddMainAccount = ({ isOpen, onClose, title }) => {
     const [negativeBalance, setNegativeBalance] = useState("");
     const [remarks, setRemarks] = useState("");
     const [isActive, setIsActive] = useState(false);
+    const [error, setError] = useState(""); 
 
-   
     const handleCheckboxChange = (event) => {
         setIsActive(event.target.checked);
     };
@@ -34,7 +34,41 @@ const AddMainAccount = ({ isOpen, onClose, title }) => {
         fetchGroup();
     }, []);
 
+    // Populate form fields with the data prop
+    useEffect(() => {
+        if (data) {
+            setAccountName(data.MainAccountName || "");
+            setBaseCurrency(data.BaseCurrency || "");
+            setBaseGroup(data.GroupId || "");
+            setPositiveBalance(data.PositiveBalanceSymbol || "");
+            setNegativeBalance(data.NegativeBalanceSymbol || "");
+            setRemarks(data.Remarks || "");
+            setIsActive(data.IsActive || false);
+        }
+    }, [data]);
+
+    // Check for duplicate account name in a case-insensitive manner
+    const validateAccountName = (name) => {
+        const lowercasedName = name.toLowerCase();
+        if (data && data.some(item => item.MainAccountName.toLowerCase() === lowercasedName)) {
+            setError("Account name already exists. Please choose a different name.");
+        } else {
+            setError("");
+        }
+    };
+
+    const handleAccountNameChange = (e) => {
+        const newAccountName = e.target.value;
+        setAccountName(newAccountName);
+        validateAccountName(newAccountName);
+    };
+
     const handleSubmit = async () => {
+        // Ensure error is not present before submitting
+        if (error) {
+            return; // Prevent form submission if there's an error
+        }
+
         await GET_METHOD(`/Api/AccountsApi/CreateMainAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${baseGroup}&MainAccountName=${accountName}&Remarks=${remarks}&BaseCurrency=${baseCurrency}&UserId=10131&IsActive=${isActive}&PositiveBalanceSymbol=${positiveBalance}&NegativeBalanceSymbol=${negativeBalance}`);
         onClose();
     };
@@ -46,14 +80,6 @@ const AddMainAccount = ({ isOpen, onClose, title }) => {
             onClose();
         }
     };
-
-    // console.log('group add main account', baseGroup)
-    // console.log("Positive Balance" , positiveBalance)
-    // console.log("Negative balance" , negativeBalance);
-    // console.log("remarks" , remarks);
-    // console.log("currency", currency);
-    // console.log("base currency", baseCurrency);
-    // console.log("isActive", isActive); 
 
     return (
         <div className="modal-overlay" onClick={handleOverlayClick}>
@@ -80,8 +106,9 @@ const AddMainAccount = ({ isOpen, onClose, title }) => {
                             label='Main Account Name'
                             placeholder="Main Account Name"
                             value={accountName}
-                            onChange={(e) => setAccountName(e.target.value)}
+                            onChange={handleAccountNameChange} // Use new handler for real-time validation
                         />
+                        {error && <p className="error-message">{error}</p>} {/* Display error message */}
 
                         <label className='label-form'>Base Currency*</label>
                         <div className='space'></div>
@@ -124,7 +151,7 @@ const AddMainAccount = ({ isOpen, onClose, title }) => {
 
                 <div className='cancel-save-btn'>
                     <button className='cancel-btn' onClick={onClose}>Cancel</button>
-                    <button className='save-btn' type='button' onClick={handleSubmit}>Save</button>
+                    <button className='save-btn' type='button' onClick={handleSubmit} disabled={!!error}>Save</button> {/* Disable save button if there's an error */}
                 </div>
             </div>
         </div>
