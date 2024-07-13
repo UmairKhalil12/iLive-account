@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     color: false,
     expandedMenu: 0,
-    isSubmenuVisible: true, // Add this line
+    isSubmenuVisible: true,
+    data : []
 };
 
 const userSlice = createSlice({
@@ -19,8 +20,11 @@ const userSlice = createSlice({
         setIsSubmenuVisible: (state, action) => {
             state.isSubmenuVisible = action.payload;
         },
+        setData : (state , action) =>{
+            state.data = action.payload; 
+        }
     },
 });
 
-export const { colorInfo, setExpandedMenu, setIsSubmenuVisible } = userSlice.actions;
+export const { colorInfo, setExpandedMenu, setIsSubmenuVisible , setData } = userSlice.actions;
 export default userSlice.reducer;

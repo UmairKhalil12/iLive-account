@@ -2,17 +2,23 @@ import React, { useEffect, useState } from 'react';
 import Input from '../Input/Input';
 import "./AddSubAccount.css";
 import { GET_METHOD } from '../../api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { setData } from '../../store/slice';
 
-export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAccountID, parentID, data }) {
+export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAccountID, parentID, update }) {
     const [currency, setCurrency] = useState([]);
     const [baseCurrency, setBaseCurrency] = useState("");
     const [accountName, setAccountName] = useState("");
     const [group, setGroup] = useState([]);
     const [remarks, setRemarks] = useState("");
-    const [selectedOption, setSelectedOption] = useState("Control Account"); // Default to Control Account
+    const [selectedOption, setSelectedOption] = useState("Control Account");
     const [isActive, setIsActive] = useState(false);
     const [baseGroup, setBaseGroup] = useState(GroupId || '');
-    const [error, setError] = useState(""); // State variable for error message
+    const [error, setError] = useState("");
+    const [formError, setFormError] = useState(false);
+
+    const data = useSelector((state) => state.user.data);
+    const dispatch = useDispatch();
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -27,6 +33,12 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
     const handleCheckboxChange = (event) => {
         setIsActive(event.target.checked);
     };
+
+    const getDataOnUpdate = async () => {
+        const res = await GET_METHOD(`/Api/AccountsApi/GetSubAccounts?LocationId=1&CampusId=1&ParentId=${parentID}&MainAccountId=${mainAccountID}`);
+        dispatch(setData(res));
+        console.log(res);
+    }
 
     useEffect(() => {
         const fetchCurrency = async () => {
@@ -43,25 +55,60 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
         fetchGroup();
     }, []);
 
+    useEffect(() => {
+        if (update) {
+            console.log(parentID);
+            const editData = data.find((d) => d.SubAccountId === parentID)
+            setAccountName(editData?.SubAccountName || "");
+            setBaseCurrency(editData?.BaseCurrency || "");
+            setBaseGroup(editData?.GroupId || "");
+            setRemarks(editData?.Remarks || "");
+            setIsActive(editData?.IsActive || false);
+        }
+    }, [data, parentID, update]);
+
     if (!isOpen) return null;
 
     const handleSubmit = async () => {
         const isControlAccount = selectedOption === 'Control Account';
         const isTransactional = selectedOption === 'Transaction Account';
-        await GET_METHOD(`/Api/AccountsApi/CreateSubAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${GroupId}&SubAccountName=${accountName}&MainAccountId=${mainAccountID}&ParentId=${parentID}&IsControl=${isControlAccount}&IsTransactional=${isTransactional}&Remarks=${remarks}&UserId=10131&BaseCurrency=${baseCurrency}&IsActive=${isActive}`);
+        if (update) {
+            await GET_METHOD(`/Api/AccountsApi/CreateSubAccount?Id=${parentID}&LocationId=1&CampusId=1&CompanyId=100&GroupId=${GroupId}&SubAccountName=${accountName}&MainAccountId=${mainAccountID}&ParentId=${parentID}&IsControl=${isControlAccount}&IsTransactional=${isTransactional}&Remarks=${remarks}&UserId=10131&BaseCurrency=${baseCurrency}&IsActive=${isActive}`);
+            getDataOnUpdate();
+            setAccountName("");
+            setBaseCurrency("");
+            setRemarks("");
+            setIsActive("");
+        }
+        else {
+            await GET_METHOD(`/Api/AccountsApi/CreateSubAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${GroupId}&SubAccountName=${accountName}&MainAccountId=${mainAccountID}&ParentId=${parentID}&IsControl=${isControlAccount}&IsTransactional=${isTransactional}&Remarks=${remarks}&UserId=10131&BaseCurrency=${baseCurrency}&IsActive=${isActive}`);
+            getDataOnUpdate();
+            setAccountName("");
+            setRemarks("");
+            setBaseCurrency("");
+            setIsActive("");
+        }
+
         onClose();
     };
 
     const handleAccountNameChange = (e) => {
         const newName = e.target.value;
         setAccountName(newName);
-
-        // Check for duplicate sub-account name in a case-insensitive manner and ignoring extra spaces
         const isDuplicate = data.some(subAccount => subAccount.SubAccountName.trim().toLowerCase() === newName.trim().toLowerCase());
         if (isDuplicate) {
             setError("Sub Account Name already exists");
         } else {
             setError("");
+        }
+    };
+
+    const handleForm = () => {
+        console.log('handleform sub account');
+        if (baseCurrency === '' || accountName === '' || remarks === '') {
+            setFormError(true);
+        } else {
+            setFormError(false);
         }
     };
 
@@ -76,7 +123,7 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
                 </div>
 
                 <div className='add-main-account'>
-                    <form style={{ padding: '1rem' }}>
+                    <form style={{ padding: '1rem' }} onChange={handleForm}>
                         <label className='label-form'>Group*</label> <div className='space'></div>
 
                         <select className='select-group' value={baseGroup} onChange={(e) => setBaseGroup(e.target.value)}>
@@ -152,7 +199,7 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
 
                 <div className='cancel-save-btn'>
                     <button className='cancel-btn' onClick={onClose}>Cancel</button>
-                    <button className='save-btn' type='button' onClick={handleSubmit} disabled={!!error}>Save</button>
+                    <button className='save-btn' type='button' onClick={handleSubmit} disabled={!!error || formError}>Save</button>
                 </div>
             </div>
         </div>

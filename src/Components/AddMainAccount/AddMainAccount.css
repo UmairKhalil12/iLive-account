@@ -147,6 +147,11 @@
     cursor: pointer;
 }
 
+.save-btn:disabled{
+    background-color: #A4C2A8;
+    cursor:not-allowed;
+}
+
 .error-message {
     color: red;
     font-size: 0.875rem;

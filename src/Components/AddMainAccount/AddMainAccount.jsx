@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import "./AddMainAccount.css";
 import Input from '../Input/Input';
 import { GET_METHOD } from '../../api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { setData } from '../../store/slice';
 
-const AddMainAccount = ({ isOpen, onClose, title, data }) => {
+const AddMainAccount = ({ isOpen, onClose, title, mainAccountId }) => {
     const [accountName, setAccountName] = useState("");
     const [group, setGroup] = useState([]);
     const [currency, setCurrency] = useState([]);
@@ -13,11 +15,20 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
     const [negativeBalance, setNegativeBalance] = useState("");
     const [remarks, setRemarks] = useState("");
     const [isActive, setIsActive] = useState(false);
-    const [error, setError] = useState(""); 
+    const [error, setError] = useState("");
+    const [formError, setFormError] = useState(true);
+    const data = useSelector((state) => state.user.data);
+    const dispatch = useDispatch();
 
     const handleCheckboxChange = (event) => {
         setIsActive(event.target.checked);
     };
+
+    const getDataOnUpdate = async () => {
+        const res = await GET_METHOD(`/Api/AccountsApi/GetMainAccounts?LocationId=1&CampusId=1`);
+        dispatch(setData(res));
+        console.log(res);
+    }
 
     useEffect(() => {
         const fetchCurrency = async () => {
@@ -36,16 +47,17 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
 
     // Populate form fields with the data prop
     useEffect(() => {
-        if (data) {
-            setAccountName(data.MainAccountName || "");
-            setBaseCurrency(data.BaseCurrency || "");
-            setBaseGroup(data.GroupId || "");
-            setPositiveBalance(data.PositiveBalanceSymbol || "");
-            setNegativeBalance(data.NegativeBalanceSymbol || "");
-            setRemarks(data.Remarks || "");
-            setIsActive(data.IsActive || false);
+        if (mainAccountId) {
+            const editData = data.find((d) => d.MainAccountId === mainAccountId)
+            setAccountName(editData?.MainAccountName || "");
+            setBaseCurrency(editData?.BaseCurrency || "");
+            setBaseGroup(editData?.GroupId || "");
+            setPositiveBalance(editData?.PositiveBalanceSymbol || "");
+            setNegativeBalance(editData?.NegativeBalanceSymbol || "");
+            setRemarks(editData?.Remarks || "");
+            setIsActive(editData?.IsActive || false);
         }
-    }, [data]);
+    }, [data, mainAccountId]);
 
     // Check for duplicate account name in a case-insensitive manner
     const validateAccountName = (name) => {
@@ -64,13 +76,41 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
     };
 
     const handleSubmit = async () => {
-        // Ensure error is not present before submitting
         if (error) {
-            return; // Prevent form submission if there's an error
+            return;
         }
-
-        await GET_METHOD(`/Api/AccountsApi/CreateMainAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${baseGroup}&MainAccountName=${accountName}&Remarks=${remarks}&BaseCurrency=${baseCurrency}&UserId=10131&IsActive=${isActive}&PositiveBalanceSymbol=${positiveBalance}&NegativeBalanceSymbol=${negativeBalance}`);
+        if (mainAccountId) {
+            await GET_METHOD(`/Api/AccountsApi/CreateMainAccount?Id=${mainAccountId}&LocationId=1&CampusId=1&CompanyId=100&GroupId=${baseGroup}&MainAccountName=${accountName}&Remarks=${remarks}&BaseCurrency=${baseCurrency}&UserId=10131&IsActive=${isActive}&PositiveBalanceSymbol=${positiveBalance}&NegativeBalanceSymbol=${negativeBalance}`);
+            getDataOnUpdate();
+            setAccountName("");
+            setBaseCurrency("");
+            setBaseGroup("");
+            setPositiveBalance("");
+            setNegativeBalance("");
+            setRemarks("");
+            setIsActive("");
+        }
+        else {
+            await GET_METHOD(`/Api/AccountsApi/CreateMainAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${baseGroup}&MainAccountName=${accountName}&Remarks=${remarks}&BaseCurrency=${baseCurrency}&UserId=10131&IsActive=${isActive}&PositiveBalanceSymbol=${positiveBalance}&NegativeBalanceSymbol=${negativeBalance}`);
+            getDataOnUpdate();
+            setAccountName("");
+            setBaseCurrency("");
+            setBaseGroup("");
+            setPositiveBalance("");
+            setNegativeBalance("");
+            setRemarks("");
+            setIsActive("");
+        }
         onClose();
+    };
+
+    const handleForm = () => {
+        console.log('handleform sub account');
+        if (baseCurrency === '' || accountName === '' || remarks === '') {
+            setFormError(true);
+        } else {
+            setFormError(false);
+        }
     };
 
     if (!isOpen) return null;
@@ -92,7 +132,7 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
                 </div>
 
                 <div className='add-main-account'>
-                    <form style={{ padding: '1rem' }}>
+                    <form style={{ padding: '1rem' }} onChange={handleForm}>
                         <label className='label-form'>Group*</label>
                         <div className='space'></div>
                         <select className='select-group' value={baseGroup} onChange={(e) => setBaseGroup(e.target.value)}>
@@ -106,9 +146,9 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
                             label='Main Account Name'
                             placeholder="Main Account Name"
                             value={accountName}
-                            onChange={handleAccountNameChange} // Use new handler for real-time validation
+                            onChange={handleAccountNameChange}
                         />
-                        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+                        {error && <p className="error-message">{error}</p>}
 
                         <label className='label-form'>Base Currency*</label>
                         <div className='space'></div>
@@ -151,7 +191,7 @@ const AddMainAccount = ({ isOpen, onClose, title, data }) => {
 
                 <div className='cancel-save-btn'>
                     <button className='cancel-btn' onClick={onClose}>Cancel</button>
-                    <button className='save-btn' type='button' onClick={handleSubmit} disabled={!!error}>Save</button> {/* Disable save button if there's an error */}
+                    <button className='save-btn' type='button' onClick={handleSubmit} disabled={!!error || formError}>Save</button>
                 </div>
             </div>
         </div>

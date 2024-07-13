@@ -7,17 +7,16 @@ import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import AccountType from "../AccountType/AccountType";
 import TableButton from "../TableButton/TableButton";
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import "./Table.css";
 import { useNavigate } from 'react-router-dom';
 import { GET_METHOD } from '../../api/api';
 import AddSubAccount from '../AddSubAccount/AddSubAccount';
 import AddMainAccount from '../AddMainAccount/AddMainAccount';
+import { copyToClipboard, exportToExcel, exportToPDF } from '../../exportUtils/exportUtils';
+import "./Table.css";
+import { useSelector } from 'react-redux';
 
-export default function Table({ data }) {
+export default function Table({onUpdate}) {
+    const data = useSelector((state) => state.user.data);
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');
@@ -43,13 +42,14 @@ export default function Table({ data }) {
                     : `/Api/AccountsApi/deleteMainAccount?Id=${id}&LocationId=1&CampusId=1&UserId=10131`;
                 const res = await GET_METHOD(endpoint);
                 console.log(res, 'delete');
+                onUpdate(); 
             } catch (error) {
                 console.log(error.message);
             }
         } else {
             console.log("Account deletion cancelled");
         }
-    }, []);
+    }, [onUpdate]);
 
     const handleEdit = useCallback((subAccountId, mainAccountId, isSubAccount, groupId) => {
         setIsSubAccount(isSubAccount);
@@ -62,8 +62,7 @@ export default function Table({ data }) {
         openModal();
     }, [data]);
 
-
-    const columns = React.useMemo(() => [
+    const columns = useMemo(() => [
         {
             Header: "Account Code",
             accessor: (row) => row.MainAccountGenId || row.SubAccountGenId || "N/A",
@@ -101,7 +100,7 @@ export default function Table({ data }) {
             Cell: ({ row }) => (
                 <div className="action-icons">
                     <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => handleEdit(row?.original?.SubAccountId || 0, row?.original?.MainAccountId, !!row?.original?.SubAccountId, row?.original?.GroupId)} />
-                    {row?.original?.AccountType === "Control" && (
+                    {row?.original?.IsActive && row?.original?.AccountType === "Control" ? (
                         <IoEyeOutline
                             style={{ cursor: 'pointer', marginRight: '15px' }}
                             size={12}
@@ -112,9 +111,10 @@ export default function Table({ data }) {
                                 row?.original?.TreeHTML
                             )}
                         />
-                    )}
+                    ) : null}
                     {row?.original?.SubAccountCount === 0 ? (
                         <CiTrash
+                            style={{ cursor: 'pointer' }}
                             onClick={() => handleDelete(
                                 row?.original?.SubAccountId || row?.original?.MainAccountId,
                                 !!row?.original?.SubAccountId
@@ -134,94 +134,11 @@ export default function Table({ data }) {
         data: data || []
     }, useSortBy, usePagination);
 
-    const handleExport = () => {
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'account_data.xlsx');
-    };
+    const handleCopy = () => copyToClipboard('account-table', setMessage, setCopied);
 
-    const handleCopy = async () => {
-        const table = document.getElementById('account-table');
-        if (!table) {
-            setMessage('Table not found!');
-            return;
-        }
+    const handleExport = () => exportToExcel(data);
 
-        const rows = table.querySelectorAll('tr');
-        let text = '';
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('th, td');
-            const rowText = Array.from(cells)
-                .map(cell => cell.innerText.trim())
-                .join('\t'); // Tab-separated values
-            text += rowText + '\n'; // New line for each row
-        });
-
-        const textarea = document.createElement('textarea');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        textarea.value = text;
-        document.body.appendChild(textarea);
-
-        textarea.select();
-        try {
-            const successful = document.execCommand('copy');
-            if (successful) {
-                setMessage('Copied to clipboard!');
-                setCopied(true);
-                setTimeout(() => {
-                    setCopied(false);
-                    setMessage('');
-                }, 2000);
-            } else {
-                setMessage('Failed to copy!');
-            }
-        } catch (err) {
-            console.error('Failed to copy: ', err);
-            setMessage('Failed to copy!');
-        }
-
-        document.body.removeChild(textarea);
-    };
-
-    const handleExportPDF = () => {
-        const MARGIN = 10;
-        const PAGE_WIDTH = 210;
-        const PAGE_HEIGHT = 295;
-        const table = document.getElementById('account-table');
-        if (!table) {
-            setMessage('Table not found!');
-            return;
-        }
-
-        html2canvas(table, { scale: 2 }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-
-            const imgWidth = PAGE_WIDTH - 2 * MARGIN; // Adjust width for margins
-            const imgHeight = canvas.height * imgWidth / canvas.width;
-            const heightLeft = imgHeight - (PAGE_HEIGHT - 2 * MARGIN); // Adjust height for margins
-
-            let position = MARGIN;
-
-            pdf.addImage(imgData, 'PNG', MARGIN, position, imgWidth, imgHeight);
-            let heightLeftAfterPage = heightLeft;
-
-            while (heightLeftAfterPage > 0) {
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', MARGIN, -heightLeftAfterPage, imgWidth, imgHeight);
-                heightLeftAfterPage -= PAGE_HEIGHT - 2 * MARGIN;
-            }
-
-            pdf.save('account_data.pdf');
-        }).catch(error => {
-            console.error('Failed to create PDF: ', error);
-            setMessage('Failed to create PDF!');
-        });
-    };
+    const handleExportPDF = () => exportToPDF('account-table', setMessage);
 
     return (
         <div className='main-container'>
@@ -287,7 +204,7 @@ export default function Table({ data }) {
                     GroupId={modalData.groupId}
                     mainAccountID={modalData.mainAccountId}
                     parentID={modalData.subAccountId}
-                    data={modalData.data}
+                    update={true}
                 />
             )}
             {isModalOpen && !isSubAccount && (
@@ -295,7 +212,7 @@ export default function Table({ data }) {
                     onClose={closeModal}
                     isOpen={isModalOpen}
                     title="Main Account"
-                    data={modalData.data}
+                    mainAccountId={modalData.mainAccountId}
                 />
             )}
         </div>

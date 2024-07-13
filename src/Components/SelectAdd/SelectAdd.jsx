@@ -6,11 +6,14 @@ import AddMainAccount from '../AddMainAccount/AddMainAccount';
 import AddSubAccount from '../AddSubAccount/AddSubAccount';
 import { useEffect } from 'react'
 import { GET_METHOD } from '../../api/api';
+import { useSelector } from 'react-redux';
 
-export default function SelectAdd({ accountType, GroupId, mainAccountID, parentID, data }) {
+export default function SelectAdd({ accountType, GroupId, mainAccountID, parentID}) {
     const [accounts, setAccounts] = useState([]);
     const [option, setOption] = useState([])
 
+    const data = useSelector((state) => state.user.data);
+    
     const fetchAllAccounts = async () => {
         const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
         setAccounts(res);
