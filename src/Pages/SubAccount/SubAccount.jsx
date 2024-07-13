@@ -37,7 +37,7 @@ export default function SubAccount() {
 
     useEffect(() => {
         getData();
-    }, [mainAccountID, parentID, dispatch, getData]);
+    }, [getData]);
 
     console.log("Fetched sub account data:", data);
 

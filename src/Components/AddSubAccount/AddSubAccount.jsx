@@ -17,6 +17,8 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
     const [error, setError] = useState("");
     const [formError, setFormError] = useState(false);
 
+    console.log("groupid addsubaccount" , GroupId);
+
     const data = useSelector((state) => state.user.data);
     const dispatch = useDispatch();
 
@@ -67,26 +69,29 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
         }
     }, [data, parentID, update]);
 
-    if (!isOpen) return null;
+   
 
     const handleSubmit = async () => {
         const isControlAccount = selectedOption === 'Control Account';
         const isTransactional = selectedOption === 'Transaction Account';
         if (update) {
             await GET_METHOD(`/Api/AccountsApi/CreateSubAccount?Id=${parentID}&LocationId=1&CampusId=1&CompanyId=100&GroupId=${GroupId}&SubAccountName=${accountName}&MainAccountId=${mainAccountID}&ParentId=${parentID}&IsControl=${isControlAccount}&IsTransactional=${isTransactional}&Remarks=${remarks}&UserId=10131&BaseCurrency=${baseCurrency}&IsActive=${isActive}`);
-            getDataOnUpdate();
             setAccountName("");
             setBaseCurrency("");
             setRemarks("");
             setIsActive("");
+            setBaseGroup("");
+            window.location.reload();
+           
         }
         else {
             await GET_METHOD(`/Api/AccountsApi/CreateSubAccount?Id=0&LocationId=1&CampusId=1&CompanyId=100&GroupId=${GroupId}&SubAccountName=${accountName}&MainAccountId=${mainAccountID}&ParentId=${parentID}&IsControl=${isControlAccount}&IsTransactional=${isTransactional}&Remarks=${remarks}&UserId=10131&BaseCurrency=${baseCurrency}&IsActive=${isActive}`);
-            getDataOnUpdate();
             setAccountName("");
             setRemarks("");
             setBaseCurrency("");
             setIsActive("");
+            setBaseGroup("");
+            await getDataOnUpdate();
         }
 
         onClose();
@@ -112,6 +117,8 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
         }
     };
 
+    if (!isOpen) return null;
+
     return (
         <div className="modal-overlay" onClick={handleOverlayClick}>
             <div className="modal-content">
@@ -129,7 +136,7 @@ export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAcc
                         <select className='select-group' value={baseGroup} onChange={(e) => setBaseGroup(e.target.value)}>
                             {
                                 group.map((gr) => (
-                                    <option key={`${GroupId} + ${gr.Description}`} value={GroupId} disabled>{gr.Description}</option>
+                                    <option key={`${GroupId} + ${gr.Description}`} value={GroupId}>{gr.Description}</option>
                                 ))
                             }
                         </select>
