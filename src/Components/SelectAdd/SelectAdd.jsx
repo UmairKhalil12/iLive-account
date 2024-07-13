@@ -15,6 +15,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
     const [accounts, setAccounts] = useState([]);
     const [option, setOption] = useState([]);
     const [tree, setTree] = useState([]);
+    const [disable, setDisable] = useState(false);
 
     const data = useSelector((state) => state.user.data);
     const name = data.find((d) =>
@@ -22,7 +23,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
     )
     const n = name?.MainAccountName;
     console.log('name', n);
-  
+
 
     const [path, setPath] = useState([{ name: n, link: '/' }]);
     const location = useLocation();
@@ -64,18 +65,24 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
     }
 
     useEffect(() => {
-        handleTree();
-    }, [])
+        if (location.pathname === '/') {
+            setDisable(true);
+        } else {
+            setDisable(false);
+        }
+    }, []);
 
     useEffect(() => {
         const currentPath = location.pathname.split('/').filter(Boolean);
         const newPath = currentPath.map((crumb, index) => ({
-            name : data.find((d) => d.ParentId == parentID)?.SubAccountName,
+            name: data.find((d) => d.ParentId == parentID)?.SubAccountName,
             // name: crumb.charAt(0).toUpperCase() + crumb.slice(1),
             // link: '/' + currentPath.slice(0, index + 1).join('/')
         }));
         setPath([{ name: n, link: '/' }, ...newPath]);
     }, [location.pathname]);
+
+
 
     return (
         <>
@@ -88,7 +95,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
                             <option key={acc.ID} value={acc.ID} onClick={() => handleOptionClick(acc.ID, acc.GENERICID, acc.ACCOUNTTYPE)}>{acc.GENERICID} -  {acc.NAME}</option>
                         ))}
                     </select>
-                    <button className='arrow-btn' onClick={() => navigate(-1)} > &larr; </button>
+                    <button className='arrow-btn' onClick={() => navigate(-1)} disabled={disable} > &larr; </button>
                 </div>
 
                 <button className='add-account-btn' onClick={openModal}> <FiPlus /> {accountType} </button>
