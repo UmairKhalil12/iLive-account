@@ -7,18 +7,19 @@ import { setExpandedMenu, setIsSubmenuVisible } from '../../store/slice';
 import { PiSquaresFourThin } from "react-icons/pi";
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './Sidebar.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Sidebar() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const expandedMenu = useSelector((state) => state.user.expandedMenu);
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const [nestedMenu, setNestedMenu] = useState(null);
-
     const menuItems = [
         {
             icon: <MdOutlineAccountBalance size={24} />, title: "Accounts", submenu: [
-                { icon: <CiBoxList size={17} />, text: "Account List" },
-                { icon: <CiBoxList size={17} />, text: "Cash Payment" },
+                { icon: <CiBoxList />, text: "Account List" },
+                { icon: <CiBoxList onClick={() => navigate("/voucher")}  size={17} />, text: "Cash Payment" , onClick: () => navigate("/voucher")  },
                 { icon: <CiBoxList size={17} />, text: "Cash Receipt" },
                 { icon: <CiBoxList size={17} />, text: "Bank Payment" },
                 { icon: <CiBoxList size={17} />, text: "Bank Receipt" },

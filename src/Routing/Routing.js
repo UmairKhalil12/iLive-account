@@ -5,6 +5,9 @@ import Login from '../Pages/Login/Login'
 // import { VscLoading } from 'react-icons/vsc';
 import SubAccount from "../Pages/SubAccount/SubAccount"
 import Loader from '../Components/Loader/Loader';
+import FilterAccount from '../Pages/FilterAccount/FilterAccount';
+import Voucher from '../Pages/Vouchers/Voucher';
+import AddVoucher from "../Components/AddVoucher/AddVoucher";
 
 export default function Routing() {
     return (
@@ -14,7 +17,10 @@ export default function Routing() {
                 <Route path="/login" element={<Login />} />
                 <Route path= "/loading" element = {<Loader />} /> 
                 <Route path="/subaccount/:mainAccountID/:parentID/:GroupId" element={<SubAccount />} />
-            </Routes>
+                <Route path = "/filter/:id" element={<FilterAccount /> } />
+                <Route path = '/voucher' element={<Voucher />} />
+                <Route path = '/AddVoucher' element={<AddVoucher />} />
+              </Routes> 
         </BrowserRouter>
     )
 }

@@ -1,0 +1,45 @@
+.add-voucher{
+    background-color: var(--main-background-color);
+    color: var(--main-text-color);
+    border: 0.5px solid var(--table-border-color);
+    width: 90%;
+    padding: 1rem;
+}
+
+.add-voucher-2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.add-voucher-3{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.add-voucher-3 div{
+    margin-bottom: 1rem;
+}
+
+.add-voucher-3 input , .add-voucher-3 select{
+    width: 300px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    color: var(--table-border-color);
+    background-color: var( --input-background);
+    padding-left: 0.2rem;
+}
+
+.add-voucher-3 input:disabled{
+    cursor: not-allowed;
+}
+
+.particulars{
+    width: 1050px;
+    background-color: var( --input-background);
+    padding-left: 0.2rem;
+    border: none;
+    border-radius: 5px;
+}
