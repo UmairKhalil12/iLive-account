@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Navbar from '../../Components/Navbar/Navbar';
-import Sidebar from '../../Components/Sidebar/Sidebar';
-import VoucherTable from '../../Components/VoucherTable/VoucherTable';
+import Navbar from '../../Components/Navigation/Navbar/Navbar';
+import Sidebar from '../../Components/Navigation/Sidebar/Sidebar';
+// import VoucherTable from '../../Components/VoucherTable/VoucherTable';
 
 export default function AddVoucherPage() {
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);

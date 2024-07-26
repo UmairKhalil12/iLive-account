@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Navbar from '../../Components/Navbar/Navbar';
-import Table from '../../Components/Table/Table';
-import SelectAdd from '../../Components/SelectAdd/SelectAdd';
-import Sidebar from '../../Components/Sidebar/Sidebar';
+import { useParams } from 'react-router-dom';
+import Navbar from '../../Components/Navigation/Navbar/Navbar';
+import Table from '../../Components/AllTable/Table/Table';
+import SelectAdd from '../../Components/OtherComponents/SelectAdd/SelectAdd';
+import Sidebar from '../../Components/Navigation/Sidebar/Sidebar';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_METHOD } from '../../api/api';
-import { useParams } from 'react-router-dom';
-import Loader from '../../Components/Loader/Loader';
+import Loader from '../../Components/OtherComponents/Loader/Loader'
 import { setData } from '../../store/slice';
 
 export default function SubAccount() {
@@ -24,7 +24,7 @@ export default function SubAccount() {
                 console.log('Fetching sub account data with MainAccountID:', mainAccountID, 'and ParentID:', parentID);
                 const res = await GET_METHOD(`/Api/AccountsApi/GetSubAccounts?LocationId=1&CampusId=1&ParentId=${parentID}&MainAccountId=${mainAccountID}`);
                 dispatch(setData(res));
-                console.log("Fetched sub account data:", data);
+                // console.log("Fetched sub account data:", data);
 
             }
         } catch (error) {
@@ -39,7 +39,7 @@ export default function SubAccount() {
         getData();
     }, [getData]);
 
-    console.log("Fetched sub account data:", data);
+    // console.log("Fetched sub account data:", data);
 
     const handleUpdate = async () =>{
         const res = await GET_METHOD(`/Api/AccountsApi/GetSubAccounts?LocationId=1&CampusId=1&ParentId=${parentID}&MainAccountId=${mainAccountID}`)

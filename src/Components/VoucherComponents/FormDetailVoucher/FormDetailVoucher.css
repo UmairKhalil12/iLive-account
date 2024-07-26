@@ -1,0 +1,18 @@
+.form-detail-voucher{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--table-background-color);
+    color: var(--main-text-color);
+    /* border: 0.5px solid var(--table-border-color); */
+    width: 90%;
+    margin: auto;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.btn-svg{
+    background-color: none;
+    color: var(--main-text-color);
+    margin-left: 0.5rem;
+}

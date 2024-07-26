@@ -1,0 +1,23 @@
+.voucher-btn-div {
+    display: flex;
+    margin-left: 2rem;
+    align-items: center;
+    width: 50%;
+}
+
+.voucher-btn {
+    background-color: var(--main-green-color);
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 8px var(--box-shadow-account-btn);
+    margin-left: 1rem;
+}
+
+.icon-spacing {
+    margin-right: 0.5rem; /* Adjust the space as needed */
+}

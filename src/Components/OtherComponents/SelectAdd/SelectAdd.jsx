@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './SelectAdd.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiPlus } from "react-icons/fi";
-import AddMainAccount from '../AddMainAccount/AddMainAccount';
-import AddSubAccount from '../AddSubAccount/AddSubAccount';
-import { GET_METHOD } from '../../api/api';
+import AddMainAccount from '../../Form/AddMainAccount/AddMainAccount';
+import AddSubAccount from '../../Form/AddSubAccount/AddSubAccount';
+import { GET_METHOD } from '../../../api/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { setData } from '../../store/slice';
+import { setData } from '../../../store/slice';
 
 export default function SelectAdd({ accountType, GroupId, mainAccountID, parentID }) {
     const [accounts, setAccounts] = useState([]);
@@ -21,6 +21,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
 
     const fetchAllAccounts = async () => {
         const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
+        console.log('select add', res); 
         setAccounts(res);
     };
 
@@ -60,7 +61,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
                     <select className={ accountType === 'Add Voucher' ? 'select-account-disable' : 'select-account'} onChange={handleChange}  >
                         <option value=''>Select Account</option>
                         {accounts?.map((acc) => (
-                            <option key={acc.ID} value={acc.GUID}>
+                            <option key={acc.ID} value={acc.ID}>
                                 {acc.GENERICID} - {acc.NAME}
                             </option>
                         ))}

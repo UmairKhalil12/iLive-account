@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "./AddMainAccount.css";
-import Input from '../Input/Input';
-import { GET_METHOD } from '../../api/api';
+import Input from '../../OtherComponents/Input/Input';
+import { GET_METHOD } from '../../../api/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { setData } from '../../store/slice';
+import { setData } from '../../../store/slice';
 
 const AddMainAccount = ({ isOpen, onClose, title, mainAccountId }) => {
     const [accountName, setAccountName] = useState("");

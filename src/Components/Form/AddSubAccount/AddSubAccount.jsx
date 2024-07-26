@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Input from '../Input/Input';
+import Input from '../../OtherComponents/Input/Input';
 import "./AddSubAccount.css";
-import { GET_METHOD } from '../../api/api';
+import { GET_METHOD } from '../../../api/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { setData } from '../../store/slice';
+import { setData } from '../../../store/slice';
 
 export default function AddSubAccount({ isOpen, onClose, title, GroupId, mainAccountID, parentID, update }) {
     const [currency, setCurrency] = useState([]);

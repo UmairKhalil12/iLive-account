@@ -1,19 +1,21 @@
+import "./Table.css";
 import React, { useState, useMemo, useCallback } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
-import ActionButton from "../ActionButton/ActionButton";
 import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit, CiTrash } from "react-icons/ci";
-import AccountType from "../AccountType/AccountType";
-import TableButton from "../TableButton/TableButton";
 import { useNavigate } from 'react-router-dom';
-import { GET_METHOD } from '../../api/api';
-import AddSubAccount from '../AddSubAccount/AddSubAccount';
-import AddMainAccount from '../AddMainAccount/AddMainAccount';
-import { copyToClipboard, exportToExcel, exportToPDF } from '../../exportUtils/exportUtils';
-import "./Table.css";
 import { useSelector } from 'react-redux';
+
+import ActionButton from "../../AccountComponents/ActionButton/ActionButton";
+import AccountType from "../../AccountComponents/AccountType/AccountType";
+import TableButton from "../TableButton/TableButton";
+import { GET_METHOD } from '../../../api/api';
+import AddSubAccount from '../../Form/AddSubAccount/AddSubAccount';
+import AddMainAccount from '../../Form/AddMainAccount/AddMainAccount';
+import { copyToClipboard, exportToExcel, exportToPDF } from '../../../exportUtils/exportUtils';
+
 
 export default function Table({onUpdate}) {
     const data = useSelector((state) => state.user.data);

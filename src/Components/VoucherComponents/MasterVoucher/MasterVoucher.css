@@ -1,0 +1,70 @@
+.add-voucher {
+    background-color: var(--table-background-color);
+    color: var(--main-text-color);
+    /* border: 0.5px solid var(--table-border-color); */
+    width: 90%;
+    margin: auto;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.add-voucher-2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-group  ,.form-group-margin {
+    margin: 0.5rem;
+}
+
+.form-group label , .form-group-margin label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    width: 300px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    color: var(--table-border-color);
+    background-color: var(--input-background);
+    padding-left: 0.2rem;
+}
+
+.form-group-margin input , .form-group-margin select{
+    width: 250px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    color: var(--table-border-color);
+    background-color: var(--input-background);
+    padding-left: 0.2rem;
+}
+
+.form-group select {
+    width: 310px;
+}
+
+.form-group input:disabled {
+    cursor: not-allowed;
+}
+
+.particulars {
+    width: calc(100% - 1rem);
+    background-color: var(--input-background);
+    padding-left: 0.2rem;
+    border: none;
+    border-radius: 5px;
+    resize:scroll;
+}

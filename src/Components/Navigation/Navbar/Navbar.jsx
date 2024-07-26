@@ -1,17 +1,17 @@
 import React from 'react';
 import "./Navbar.css";
 import { RiMenu2Fill } from "react-icons/ri";
-import Button from '../Button/Button';
+import Button from '../../OtherComponents/Button/Button';
 import { LuFactory } from "react-icons/lu";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaBuildingColumns } from "react-icons/fa6";
 import { MdLightMode } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { colorInfo, setExpandedMenu, setIsSubmenuVisible } from '../../store/slice';
+import { colorInfo, setExpandedMenu, setIsSubmenuVisible } from '../../../store/slice';
 import { IoMdMoon } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function Navbar() {
+export default function Navbar({text}) {
     const color = useSelector((state) => state.user.color);
     const expandedMenu = useSelector((state) => state.user.expandedMenu);
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
@@ -46,7 +46,7 @@ export default function Navbar() {
                         onClick={() => toggleMenu(expandedMenu)}
                     />
                 }
-                <p style={{ color: "var(--main-text-color)" }} >Account List</p>
+                <p style={{ color: "var(--main-text-color)" }} >{text ? text : 'Account List'}</p>
             </div>
 
             <div className='btn-nav'>

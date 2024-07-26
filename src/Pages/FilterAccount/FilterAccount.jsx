@@ -1,8 +1,8 @@
 import React from 'react'
-import Sidebar from '../../Components/Sidebar/Sidebar';
-import Navbar from '../../Components/Navbar/Navbar';
-import SelectAdd from '../../Components/SelectAdd/SelectAdd';
-import Table from "../../Components/Table/Table";
+import Sidebar from '../../Components/Navigation/Sidebar/Sidebar';
+import Navbar from '../../Components/Navigation/Navbar/Navbar';
+import SelectAdd from '../../Components/OtherComponents/SelectAdd/SelectAdd';
+import Table from "../../Components/AllTable/Table/Table";
 import { useSelector } from 'react-redux';
 
 export default function FilterAccount() {

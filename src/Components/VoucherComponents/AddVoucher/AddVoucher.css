@@ -1,0 +1,13 @@
+.accounting-page {
+    display: flex;
+    background-color: var(--main-background-color);
+    color: var(--main-text-color);
+}
+
+.accounting-page-margin {
+    padding-left: 220px; 
+}
+
+.container-1 {
+    flex-grow: 1;
+}

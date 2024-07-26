@@ -3,7 +3,7 @@ import { CiBoxList } from "react-icons/ci";
 import { MdPerson } from 'react-icons/md';
 import { MdOutlineAccountBalance } from "react-icons/md";
 import { useSelector, useDispatch } from 'react-redux';
-import { setExpandedMenu, setIsSubmenuVisible } from '../../store/slice';
+import { setExpandedMenu, setIsSubmenuVisible } from '../../../store/slice';
 import { PiSquaresFourThin } from "react-icons/pi";
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './Sidebar.css';
@@ -18,7 +18,7 @@ export default function Sidebar() {
     const menuItems = [
         {
             icon: <MdOutlineAccountBalance size={24} />, title: "Accounts", submenu: [
-                { icon: <CiBoxList />, text: "Account List" },
+                { icon: <CiBoxList onClick={() => navigate("/")} />, text: "Account List" },
                 { icon: <CiBoxList onClick={() => navigate("/voucher")}  size={17} />, text: "Cash Payment" , onClick: () => navigate("/voucher")  },
                 { icon: <CiBoxList size={17} />, text: "Cash Receipt" },
                 { icon: <CiBoxList size={17} />, text: "Bank Payment" },
