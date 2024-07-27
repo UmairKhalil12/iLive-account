@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
@@ -6,12 +6,51 @@ import ActionButton from "../../AccountComponents/ActionButton/ActionButton";
 import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import TableButton from "../TableButton/TableButton";
+import {  GET_METHOD, GET_METHOD_LOCAL } from '../../../api/api';
 
 // import { copyToClipboard, exportToExcel, exportToPDF } from '../../exportUtils/exportUtils';
 
 export default function VoucherTable() {
+    const [data, setData] = useState([]);
 
-    const data = useMemo(() => [], []); // Memoized empty data array
+    const [accountData , setAccountData] = useState([]); 
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            const res = await GET_METHOD("/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1");
+            setAccountData(res);
+        }
+        fetchData();
+    },[])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await GET_METHOD_LOCAL('/api/Voucher/GetAllVouchers');
+            setData(res);
+        }
+        fetchData();
+    }, [])
+
+    console.log('voucher', data);
+
+    if (data === null) {
+        setData([]);
+    }
+
+    const findName = (id) =>{
+        const findedAcc = accountData.find(item => item.ID === id);
+        console.log(findedAcc);
+        return findedAcc.NAME
+    }
+
+    const findAccCode = (id) =>{
+        const findedAcc = accountData.find(item => item.ID === id);
+        console.log(findedAcc);
+        return findedAcc.GENERICID;
+    }
+
+
+    // findName();
 
     const columns = useMemo(() => [
         {
@@ -24,11 +63,11 @@ export default function VoucherTable() {
         },
         {
             Header: "Account Code",
-            accessor: (row) => row.AccountId || "N/A",
+            accessor: (row) => findAccCode(row.AccountId) || "N/A",
         },
         {
             Header: "Account Name",
-            accessor: (row) => row.AccountId || "N/A",
+            accessor: (row) => findName(row.AccountId) || "N/A",
         },
         {
             Header: "Narration",
@@ -36,7 +75,7 @@ export default function VoucherTable() {
         },
         {
             Header: "Currency",
-            accessor: (row) => row.CurrencyId || "N/A",
+            accessor: (row) => row.CurrencyId === 102 ? "USD" : "PKR" || "N/A",
         },
         {
             Header: "Actions",
@@ -56,7 +95,7 @@ export default function VoucherTable() {
         canNextPage, canPreviousPage, state: { pageIndex }
     } = useTable({
         columns,
-        data
+        data: data || [] 
     }, useSortBy, usePagination);
 
     // const handleCopy = () => copyToClipboard('account-table', setMessage, setCopied);

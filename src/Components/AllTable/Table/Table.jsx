@@ -15,10 +15,12 @@ import { GET_METHOD } from '../../../api/api';
 import AddSubAccount from '../../Form/AddSubAccount/AddSubAccount';
 import AddMainAccount from '../../Form/AddMainAccount/AddMainAccount';
 import { copyToClipboard, exportToExcel, exportToPDF } from '../../../exportUtils/exportUtils';
+// import { setData } from "../../../store/slice";
 
 
 export default function Table({onUpdate}) {
     const data = useSelector((state) => state.user.data);
+    console.log("table" , data); 
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');

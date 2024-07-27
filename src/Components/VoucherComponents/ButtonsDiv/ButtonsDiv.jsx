@@ -6,21 +6,21 @@ import { TiTick } from "react-icons/ti";
 import { IoMdSave } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 
-export default function ButtonsDiv() {
+export default function ButtonsDiv({ onSubmit }) {
     const navigate = useNavigate();
     return (
         <div className='voucher-btn-div'>
             <button className='voucher-btn'>
                 <IoMdSave size={15} className='icon-spacing' /> Draft
             </button>
-            <button className='voucher-btn'>
+            <button className='voucher-btn' onClick={onSubmit}>
                 <TiTick size={15} className='icon-spacing' /> Post
             </button>
-            <button className='voucher-btn'>
-                <IoIosArrowRoundBack size={15} className='icon-spacing' onClick={navigate('/voucher')} /> Back to Vouchers
+            <button className='voucher-btn' onClick={() => navigate('/voucher')}>
+                <IoIosArrowRoundBack size={15} className='icon-spacing' /> Back to Vouchers
             </button>
-            <button className='voucher-btn'>
-                <IoRefresh size={15} className='icon-spacing' onClick={()=>window.location.reload()}  /> Refresh Record
+            <button className='voucher-btn' onClick={() => window.location.reload()}>
+                <IoRefresh size={15} className='icon-spacing' /> Refresh Record
             </button>
         </div>
     );

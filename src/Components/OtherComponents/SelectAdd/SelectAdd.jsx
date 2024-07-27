@@ -21,7 +21,7 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
 
     const fetchAllAccounts = async () => {
         const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
-        console.log('select add', res); 
+        // console.log('select add', res); 
         setAccounts(res);
     };
 
