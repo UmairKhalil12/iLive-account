@@ -15,12 +15,13 @@ export default function Routing() {
             <Routes>
                 <Route path="/" element={<Account />} />
                 <Route path="/login" element={<Login />} />
-                <Route path= "/loading" element = {<Loader />} /> 
+                <Route path="/loading" element={<Loader />} />
                 <Route path="/subaccount/:mainAccountID/:parentID/:GroupId" element={<SubAccount />} />
-                <Route path = "/filter/:id" element={<FilterAccount /> } />
-                <Route path = '/voucher' element={<Voucher />} />
-                <Route path = '/AddVoucher' element={<AddVoucher />} />
-              </Routes> 
+                <Route path="/filter/:id" element={<FilterAccount />} />
+                <Route path='/voucher' element={<Voucher />} />
+                <Route path='/AddVoucher' element={<AddVoucher />} />
+                <Route path='/AddVoucher/:id' element={<AddVoucher />} />
+            </Routes>
         </BrowserRouter>
     )
 }

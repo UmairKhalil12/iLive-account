@@ -3,26 +3,31 @@ import { useSelector } from 'react-redux';
 import "./MasterVoucher.css";
 import { GET_METHOD } from '../../../api/api';
 
-export default function MasterVoucher({ onDataChange }) {
+export default function MasterVoucher({ onDataChange, data }) {
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const color = useSelector((state) => state.user.color);
 
     const [accounts, setAccounts] = useState([]);
     const [voucherNo, setVoucherNo] = useState("");
-    const [voucherDate, setVoucherDate] = useState(""); // Initialize as empty string
+    const [voucherDate, setVoucherDate] = useState("");
     const [status, setStatus] = useState("");
     const [currency, setCurrency] = useState("");
     const [exchangeRate, setExchangeRate] = useState("");
     const [particulars, setParticulars] = useState("");
     const [accountHead, setAccountHead] = useState("");
+    const [accountId, setAccountId] = useState("");
     const [accountGeneric, setAccountGeneric] = useState("");
-    const [genericNo , setGenericNo] = useState(""); 
+    const [genericNo, setGenericNo] = useState("");
 
-    // const [selectedAccountHead, setSelectedAccountHead] = useState([]);
+    // console.log('data masterVoucher', data)
 
     const fetchAllAccounts = async () => {
-        const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
-        setAccounts(res);
+        try {
+            const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
+            setAccounts(res);
+        } catch (error) {
+            console.error('Error fetching accounts:', error);
+        }
     };
 
     useEffect(() => {
@@ -30,23 +35,32 @@ export default function MasterVoucher({ onDataChange }) {
     }, []);
 
     useEffect(() => {
-        onDataChange({ voucherDate, currency, particulars, accountHead, accountGeneric , genericNo });
-    }, [voucherDate, currency, particulars, accountHead, accountGeneric , genericNo]);
+        if (data) {
+            setAccountHead(data?.accountGeneric || "");
+            setVoucherDate(data.voucherDate?.split('T')[0] || "");
+            setParticulars(data?.particulars || "");
+        }
+
+
+    }, []);
+
+    useEffect(() => {
+        onDataChange({ voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead });
+    }, [voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead]);
 
     const handleChange = (event) => {
-        setAccountHead(event.target.value);
         const selectedOption = event.target.value;
         const selectedAccount = accounts.find(acc => acc.GUID === selectedOption);
-        console.log('selectedAcc', selectedAccount);
-        setAccountHead(selectedAccount?.ID);
+        setAccountHead(selectedOption);
+        setAccountId(selectedAccount?.ID );
         setCurrency(102);
-        setAccountGeneric(selectedAccount?.GUID)
-        setGenericNo(selectedAccount?.GENERICID);
+        setAccountGeneric(selectedAccount?.GUID );
+        setGenericNo(selectedAccount?.GENERICID );
     };
 
     return (
         <div className='add-voucher'>
-            <h4>Add Payment Voucher </h4>
+            <h4>Add Payment Voucher</h4>
             <div className='add-voucher-2'>
                 <div className='form-section'>
                     <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
