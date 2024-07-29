@@ -41,7 +41,7 @@ export default function AddVoucher() {
         const details = formDetailData?.map((data) => ({
             "id": id ? id : 0,
             "accountId": data?.account,
-            "accountGenId": data?.accountGenric,
+            "accountGenId": data?.selected,
             "debit": null,
             "credit": null,
             "currencyId": data?.currency,

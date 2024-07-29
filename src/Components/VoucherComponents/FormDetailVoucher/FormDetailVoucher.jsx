@@ -30,6 +30,7 @@ export default function FormDetailVoucher({ onDataChange, data }) {
 
     useEffect(() => {
         onDataChange(fields);
+        console.log(fields);
     }, [fields, onDataChange]);
 
     useEffect(() => {
@@ -48,7 +49,7 @@ export default function FormDetailVoucher({ onDataChange, data }) {
             const selectedAccount = accounts.find(acc => acc.GUID === value);
             updatedFields[index]['account'] = selectedAccount?.ID || '';
             updatedFields[index]['currency'] = 102;
-            updatedFields[index]['accountGenric'] = selectedAccount?.GUID || '';
+            updatedFields[index]['accountGenric'] = selectedAccount?.GENERICID || '';
         }
 
         setFields(updatedFields);
