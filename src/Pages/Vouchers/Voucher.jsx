@@ -13,7 +13,7 @@ export default function Voucher() {
             <div className={isSubmenuVisible ? 'accountig-page-margin' : 'accounting-page'}>
                 <Sidebar />
                 <div className='container-1'>
-                    <Navbar />
+                    <Navbar text='Cash Payment' />
                     <SelectAdd accountType='Add Voucher' />
                     <VoucherTable />
                 </div>

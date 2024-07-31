@@ -24,7 +24,13 @@ export default function MasterVoucher({ onDataChange, data }) {
     const fetchAllAccounts = async () => {
         try {
             const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
-            setAccounts(res);
+            if (res == null) {
+                setAccounts([])
+            }
+            else {
+                setAccounts(res);
+            }
+
         } catch (error) {
             console.error('Error fetching accounts:', error);
         }
@@ -40,22 +46,22 @@ export default function MasterVoucher({ onDataChange, data }) {
             setVoucherDate(data.voucherDate?.split('T')[0] || "");
             setParticulars(data?.particulars || "");
         }
-
-
     }, []);
 
     useEffect(() => {
         onDataChange({ voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead });
+
     }, [voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead]);
 
     const handleChange = (event) => {
         const selectedOption = event.target.value;
         const selectedAccount = accounts.find(acc => acc.GUID === selectedOption);
         setAccountHead(selectedOption);
-        setAccountId(selectedAccount?.ID );
+        setAccountId(selectedAccount?.ID);
         setCurrency(102);
-        setAccountGeneric(selectedAccount?.GUID );
-        setGenericNo(selectedAccount?.GENERICID );
+        setAccountGeneric(selectedAccount?.GUID);
+        setGenericNo(selectedAccount?.GENERICID);
+
     };
 
     return (

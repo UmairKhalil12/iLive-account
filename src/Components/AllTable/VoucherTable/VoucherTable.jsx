@@ -10,7 +10,6 @@ import { GET_METHOD, GET_METHOD_LOCAL } from '../../../api/api';
 import Loader from "../../OtherComponents/Loader/Loader";
 import { useNavigate } from 'react-router-dom';
 
-
 // import { copyToClipboard, exportToExcel, exportToPDF } from '../../exportUtils/exportUtils';
 
 export default function VoucherTable() {
@@ -26,17 +25,22 @@ export default function VoucherTable() {
             setLoading(false);
         }
         fetchData();
-    }, [data])
+    }, [])
 
-    const handleDelete = useCallback( async (id) => {
+    const handleDelete = useCallback(async (id) => {
         await GET_METHOD_LOCAL(`/api/Voucher/DeleteById?id=${id}&UserId=10131`);
         console.log(handleDelete);
-    },[])
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await GET_METHOD_LOCAL('/api/Voucher/GetAllVouchers');
-            setData(res);
+            if (res == null) {
+                setData(null)
+            }
+            else {
+                setData(res);
+            }
             setLoading(false);
         }
         fetchData();
@@ -66,8 +70,6 @@ export default function VoucherTable() {
 
     const navigate = useNavigate();
 
-
-
     // findName();
 
     const columns = useMemo(() => [
@@ -77,11 +79,12 @@ export default function VoucherTable() {
         },
         {
             Header: "Voucher Date",
-            accessor: (row) => row.VoucherDate || "N/A",
+            accessor: (row) => row.VoucherDate?.split('T')[0] || "N/A",
         },
         {
             Header: "Account Code",
-            accessor: (row) => findAccCode(row.AccountId) || "N/A",
+            // accessor: (row) => findAccCode(row.AccountId) || "N/A",
+            accessor: (row) => row?.GenricNo || "N/A"
         },
         {
             Header: "Account Name",
@@ -101,12 +104,11 @@ export default function VoucherTable() {
             Cell: ({ row }) => (
                 <div className="action-icons">
                     <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => navigate(`/AddVoucher/${row?.original?.Id}`)} />
-                    <IoEyeOutline style={{ cursor: 'pointer', marginRight: '15px' }} size={12} />
                     <CiTrash style={{ cursor: 'pointer' }} onClick={() => handleDelete(row?.original?.Id)} />
                 </div>
             )
         }
-    ], [findAccCode, findName, navigate , handleDelete]);
+    ], [findAccCode, findName, navigate, handleDelete]);
 
     const {
         getTableProps, getTableBodyProps, headerGroups, page, prepareRow, nextPage, previousPage,

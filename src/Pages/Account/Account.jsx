@@ -18,8 +18,14 @@ export default function Account() {
         setLoading(true);
         try {
             const res = await GET_METHOD('/Api/AccountsApi/GetMainAccounts?LocationId=1&CampusId=1');
-            dispatch(setData(res));
-            console.log('account',res);
+            console.log('account', res);
+            if(res == null){
+                dispatch(setData([]));
+            }
+            else{
+                dispatch(setData(res));
+            }
+           
         } catch (error) {
             console.log(error.message);
         } finally {
@@ -31,21 +37,22 @@ export default function Account() {
         getData();
     }, [getData]);
 
-    const handleUpdate = async() =>{
+
+    const handleUpdate = async () => {
         const res = await GET_METHOD('/Api/AccountsApi/GetMainAccounts?LocationId=1&CampusId=1');
         dispatch(setData(res));
     }
 
- 
+
     return (
         <>
             {loading ? <Loader /> : (
                 <div className={isSubmenuVisible ? 'accountig-page-margin' : 'accounting-page'}>
                     <Sidebar />
                     <div className='container-1'>
-                        <Navbar  />
-                        <SelectAdd accountType='Add Main Account'/>
-                        <Table onUpdate={handleUpdate}/>
+                        <Navbar />
+                        <SelectAdd accountType='Add Main Account' />
+                        <Table onUpdate={handleUpdate} />
                     </div>
                 </div>
             )}

@@ -18,8 +18,8 @@ export default function Sidebar() {
     const menuItems = [
         {
             icon: <MdOutlineAccountBalance size={24} />, title: "Accounts", submenu: [
-                { icon: <CiBoxList onClick={() => navigate("/")} />, text: "Account List" },
-                { icon: <CiBoxList onClick={() => navigate("/voucher")}  size={17} />, text: "Cash Payment" , onClick: () => navigate("/voucher")  },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/")} />, text: "Account List", onclick: () => { navigate("/") } },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/voucher")} />, text: "Cash Payment", onclick: () => { navigate("/voucher") } },
                 { icon: <CiBoxList size={17} />, text: "Cash Receipt" },
                 { icon: <CiBoxList size={17} />, text: "Bank Payment" },
                 { icon: <CiBoxList size={17} />, text: "Bank Receipt" },
@@ -84,8 +84,8 @@ export default function Sidebar() {
                                             }
                                         }}
                                     >
-                                        <span>{subitem.icon}</span>
-                                        <p style={{ marginLeft: '5px' }}>{subitem.text}</p>
+                                        <span>{subitem.icon} </span>
+                                        <p style={{ marginLeft: '5px' }} onClick={subitem?.onclick} >{subitem.text}</p>
                                         {subitem.submenu && (
                                             <span className="menu-arrow">
                                                 {nestedMenu === subindex ? <FaChevronUp /> : <FaChevronDown />}

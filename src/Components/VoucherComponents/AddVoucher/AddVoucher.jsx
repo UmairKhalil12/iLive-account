@@ -37,9 +37,8 @@ export default function AddVoucher() {
     const handleSubmit = async () => {
         const combinedData = { masterVoucherData, formDetailData };
         console.log('combine data', combinedData);
-
         const details = formDetailData?.map((data) => ({
-            "id": id ? id : 0,
+            "id": id ? data?.updatingId : 0,
             "accountId": data?.account,
             "accountGenId": data?.selected,
             "debit": null,
@@ -113,7 +112,8 @@ export default function AddVoucher() {
                     credit: d.CostCenter1,
                     currency: d.CurrencyId1,
                     narration: d.Narration1,
-                    selected: d.AccountGenricNo1
+                    selected: d.AccountGenricNo1,
+                    updatingId : d.Id1
                 }));
 
                 setFormDetailData(details);

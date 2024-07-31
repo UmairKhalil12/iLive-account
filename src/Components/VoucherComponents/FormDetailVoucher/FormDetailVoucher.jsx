@@ -13,12 +13,18 @@ export default function FormDetailVoucher({ onDataChange, data }) {
     // console.log('data Form detail voucher', data)
 
     const [accounts, setAccounts] = useState([]);
-    const [fields, setFields] = useState([{ account: '', narration: '', credit: '', accountGenric: '', currency: '', selected: '' }]);
+    const [fields, setFields] = useState([{ account: '', narration: '', credit: '', accountGenric: '', currency: '', selected: '', updatingId : null }]);
 
     const fetchAllAccounts = async () => {
         try {
             const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
-            setAccounts(res);
+            if(res == null){
+                setAccounts([])
+            }
+            else{
+                setAccounts(res);
+            }
+            
         } catch (error) {
             console.error('Error fetching accounts:', error);
         }
@@ -34,10 +40,10 @@ export default function FormDetailVoucher({ onDataChange, data }) {
     }, [fields, onDataChange]);
 
     useEffect(() => {
-        if(data){
+        if (data) {
             setFields(data);
         }
-        
+
     }, []);
 
     const handleFieldChange = (index, event) => {

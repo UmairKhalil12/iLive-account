@@ -1,5 +1,5 @@
 import "./Table.css";
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback} from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
@@ -7,7 +7,6 @@ import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import ActionButton from "../../AccountComponents/ActionButton/ActionButton";
 import AccountType from "../../AccountComponents/AccountType/AccountType";
 import TableButton from "../TableButton/TableButton";
@@ -16,10 +15,13 @@ import AddSubAccount from '../../Form/AddSubAccount/AddSubAccount';
 import AddMainAccount from '../../Form/AddMainAccount/AddMainAccount';
 import { copyToClipboard, exportToExcel, exportToPDF } from '../../../exportUtils/exportUtils';
 // import { setData } from "../../../store/slice";
+// import { setData } from "../../../store/slice";
 
 
 export default function Table({onUpdate}) {
+    
     const data = useSelector((state) => state.user.data);
+   
     console.log("table" , data); 
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
@@ -33,7 +35,7 @@ export default function Table({onUpdate}) {
     const closeModal = () => setIsModalOpen(false);
 
     const handleEye = useMemo(() => (mainAccountID, parentID, accountType) => {
-        const finalParentID = parentID || 0; // Use 0 if parentID is falsy
+        const finalParentID = parentID || 0;
         navigate(`/subaccount/${mainAccountID}/${finalParentID}/${accountType}`);
     }, [navigate]);
 

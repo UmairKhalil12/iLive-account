@@ -23,9 +23,13 @@ export default function SubAccount() {
             if (mainAccountID && parentID) {
                 console.log('Fetching sub account data with MainAccountID:', mainAccountID, 'and ParentID:', parentID);
                 const res = await GET_METHOD(`/Api/AccountsApi/GetSubAccounts?LocationId=1&CampusId=1&ParentId=${parentID}&MainAccountId=${mainAccountID}`);
-                dispatch(setData(res));
+                if (res == null) {
+                    dispatch(setData([]));
+                }
+                else {
+                    dispatch(setData(res));
+                }
                 // console.log("Fetched sub account data:", data);
-
             }
         } catch (error) {
             console.log("Error fetching data:", error.message);
@@ -41,10 +45,10 @@ export default function SubAccount() {
 
     // console.log("Fetched sub account data:", data);
 
-    const handleUpdate = async () =>{
+    const handleUpdate = async () => {
         const res = await GET_METHOD(`/Api/AccountsApi/GetSubAccounts?LocationId=1&CampusId=1&ParentId=${parentID}&MainAccountId=${mainAccountID}`)
         dispatch(setData(res));
-    } 
+    }
 
 
     return (
@@ -54,7 +58,7 @@ export default function SubAccount() {
                     <Sidebar />
                     <div className='container-1'>
                         <Navbar />
-                        <SelectAdd accountType='Add Sub Account' GroupId={GroupId} mainAccountID={mainAccountID} parentID={parentID}/>
+                        <SelectAdd accountType='Add Sub Account' GroupId={GroupId} mainAccountID={mainAccountID} parentID={parentID} />
                         <Table onUpdate={handleUpdate} />
                     </div>
                 </div>
