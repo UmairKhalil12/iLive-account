@@ -8,7 +8,7 @@ import { GET_METHOD } from '../../../api/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { setData } from '../../../store/slice';
 
-export default function SelectAdd({ accountType, GroupId, mainAccountID, parentID }) {
+export default function SelectAdd({ accountType, GroupId, mainAccountID, parentID, voucherType}) {
     const [accounts, setAccounts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [disable, setDisable] = useState(false);
@@ -54,6 +54,12 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
         setDisable(location.pathname === '/');
     }, [location.pathname]);
 
+    const handleButton = () =>{
+        if(voucherType){
+            return <button className='add-account-btn' onClick={()=>navigate(`/AddVoucher/${voucherType}`)} ><FiPlus />{accountType} </button>
+        }
+    }
+   
     return (
         <>
             <div className='select-add'>
@@ -69,7 +75,10 @@ export default function SelectAdd({ accountType, GroupId, mainAccountID, parentI
                     <button className='arrow-btn' onClick={() => navigate(-1)} disabled={disable}>&larr;</button>
                 </div>
 
-                <button className='add-account-btn' onClick= { accountType === 'Add Voucher' ? ()=>navigate("/AddVoucher") : openModal}><FiPlus /> {accountType}</button>
+                <>
+                {handleButton()}
+                {accountType !== 'Add Voucher' ?  <button className='add-account-btn' onClick= {openModal}><FiPlus /> {accountType}</button> : '' }
+                </>
 
                 {accountType === 'Add Sub Account' ?
                     <AddSubAccount

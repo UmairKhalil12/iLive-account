@@ -19,7 +19,7 @@ export default function Account() {
         try {
             const res = await GET_METHOD('/Api/AccountsApi/GetMainAccounts?LocationId=1&CampusId=1');
             console.log('account', res);
-            if(res == null){
+            if(res === null){
                 dispatch(setData([]));
             }
             else{

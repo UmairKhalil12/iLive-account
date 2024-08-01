@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./AddVoucher.css";
 import Navbar from "../../Navigation/Navbar/Navbar";
 import Sidebar from "../../Navigation/Sidebar/Sidebar";
@@ -23,15 +23,14 @@ export default function AddVoucher() {
     const navigate = useNavigate();
 
     const { id } = useParams();
+    const { RecSourceId } = useParams();
 
     const handleMasterVoucherChange = (data) => {
         setMasterVoucherData(data);
-        // console.log('master data', masterVoucherData);
     };
 
     const handleFormDetailChange = (data) => {
         setFormDetailData(data);
-        // console.log('detail data', formDetailData);
     };
 
     const handleSubmit = async () => {
@@ -60,7 +59,7 @@ export default function AddVoucher() {
                     "companyId": 100,
                     "locationId": 1,
                     "campusId": 1,
-                    "recSourceId": 1,
+                    "recSourceId": RecSourceId,
                     "voucherDate": masterVoucherData?.voucherDate,
                     "accountId": masterVoucherData?.accountId,
                     "accountGenId": masterVoucherData?.accountGeneric,
@@ -93,7 +92,8 @@ export default function AddVoucher() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await GET_METHOD_LOCAL(`/api/Voucher/GetVoucherMasterAndDetailById?id=${id}`);
+            console.log(id, 'updation id');
+            const res = await GET_METHOD_LOCAL(`/api/Voucher/GetVoucherMasterAndDetailById?id=${id}&RecSourceId=${RecSourceId}`);
             console.log(res, 'get voucher by id res');
             if (res) {
                 setMasterVoucherData({
@@ -113,7 +113,7 @@ export default function AddVoucher() {
                     currency: d.CurrencyId1,
                     narration: d.Narration1,
                     selected: d.AccountGenricNo1,
-                    updatingId : d.Id1
+                    updatingId: d.Id1
                 }));
 
                 setFormDetailData(details);

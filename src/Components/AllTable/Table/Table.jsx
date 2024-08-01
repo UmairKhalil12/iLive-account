@@ -1,5 +1,5 @@
 import "./Table.css";
-import React, { useState, useMemo, useCallback} from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
@@ -14,15 +14,13 @@ import { GET_METHOD } from '../../../api/api';
 import AddSubAccount from '../../Form/AddSubAccount/AddSubAccount';
 import AddMainAccount from '../../Form/AddMainAccount/AddMainAccount';
 import { copyToClipboard, exportToExcel, exportToPDF } from '../../../exportUtils/exportUtils';
-// import { setData } from "../../../store/slice";
-// import { setData } from "../../../store/slice";
 
 
-export default function Table({onUpdate}) {
-    
+export default function Table({ onUpdate }) {
+
     const data = useSelector((state) => state.user.data);
-   
-    console.log("table" , data); 
+    console.log("table", data);
+
     const navigate = useNavigate();
     const [copied, setCopied] = useState(false);
     const [message, setMessage] = useState('');
@@ -48,7 +46,7 @@ export default function Table({onUpdate}) {
                     : `/Api/AccountsApi/deleteMainAccount?Id=${id}&LocationId=1&CampusId=1&UserId=10131`;
                 const res = await GET_METHOD(endpoint);
                 console.log(res, 'delete');
-                onUpdate(); 
+                onUpdate();
             } catch (error) {
                 console.log(error.message);
             }

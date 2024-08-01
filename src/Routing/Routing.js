@@ -2,12 +2,14 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Account from '../Pages/Account/Account'
 import Login from '../Pages/Login/Login'
-// import { VscLoading } from 'react-icons/vsc';
 import SubAccount from "../Pages/SubAccount/SubAccount"
 import Loader from '../Components/OtherComponents/Loader/Loader';
 import FilterAccount from '../Pages/FilterAccount/FilterAccount';
-import Voucher from '../Pages/Vouchers/Voucher';
+import Voucher from '../Pages/Vouchers/CashPaymentVoucher/Voucher';
 import AddVoucher from "../Components/VoucherComponents/AddVoucher/AddVoucher";
+import CashRecieveVoucherPage from '../Pages/Vouchers/CashRecieveVoucherPage/CashRecieveVoucherPage';
+import BankRecieveVoucher from "../Pages/Vouchers/BankRecieveVoucher/BankRecieveVoucher";
+import BankPaymentVoucher from "../Pages/Vouchers/BankPaymentVoucher/BankPaymentVoucher";
 
 export default function Routing() {
     return (
@@ -20,7 +22,11 @@ export default function Routing() {
                 <Route path="/filter/:id" element={<FilterAccount />} />
                 <Route path='/voucher' element={<Voucher />} />
                 <Route path='/AddVoucher' element={<AddVoucher />} />
-                <Route path='/AddVoucher/:id' element={<AddVoucher />} />
+                <Route path='/AddVoucher/:RecSourceId/:id' element={<AddVoucher />} />
+                <Route path='/AddVoucher/:RecSourceId' element={<AddVoucher />} />
+                <Route path='/CashRecieveVoucher' element={<CashRecieveVoucherPage />} />
+                <Route path='/BankPaymentVoucher' element={<BankPaymentVoucher />} />
+                <Route path='/BankRecieveVoucher' element={<BankRecieveVoucher />} />
             </Routes>
         </BrowserRouter>
     )

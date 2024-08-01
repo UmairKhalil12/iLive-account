@@ -16,7 +16,7 @@ export default function ButtonsDiv({ onSubmit }) {
             <button className='voucher-btn' onClick={onSubmit}>
                 <TiTick size={15} className='icon-spacing' /> Post
             </button>
-            <button className='voucher-btn' onClick={() => navigate('/voucher')}>
+            <button className='voucher-btn' onClick={() => navigate(-1)}>
                 <IoIosArrowRoundBack size={15} className='icon-spacing' /> Back to Vouchers
             </button>
             <button className='voucher-btn' onClick={() => window.location.reload()}>

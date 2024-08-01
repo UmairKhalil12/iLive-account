@@ -3,7 +3,7 @@ import { useTable, useSortBy, usePagination } from 'react-table';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { TiArrowUnsorted } from "react-icons/ti";
 import ActionButton from "../../AccountComponents/ActionButton/ActionButton";
-import { IoEyeOutline } from "react-icons/io5";
+// import { IoEyeOutline } from "react-icons/io5";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import TableButton from "../TableButton/TableButton";
 import { GET_METHOD, GET_METHOD_LOCAL } from '../../../api/api';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 // import { copyToClipboard, exportToExcel, exportToPDF } from '../../exportUtils/exportUtils';
 
-export default function VoucherTable() {
+export default function VoucherTable({ voucherType }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -28,49 +28,42 @@ export default function VoucherTable() {
     }, [])
 
     const handleDelete = useCallback(async (id) => {
+        console.log("handle delete");
         await GET_METHOD_LOCAL(`/api/Voucher/DeleteById?id=${id}&UserId=10131`);
-        console.log(handleDelete);
     }, [])
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await GET_METHOD_LOCAL('/api/Voucher/GetAllVouchers');
-            if (res == null) {
-                setData(null)
+            if (voucherType) {
+                const res = await GET_METHOD_LOCAL(`/api/Voucher/GetAllVouchers?RecSourceId=${voucherType}`);
+                if (res == null) {
+                    setData([])
+                }
+                else {
+                    setData(res);
+                }
+                setLoading(false);
             }
             else {
-                setData(res);
+                setData([]);
             }
-            setLoading(false);
         }
         fetchData();
-    })
-
-    // console.log('voucher', data);
-
-    if (data === null) {
-        setData([]);
-    }
+    }, [voucherType , handleDelete])
 
     const findName = useCallback((id) => {
-        setLoading(true);
         const findedAcc = accountData?.find(item => item.ID === id);
-        setLoading(false);
         return findedAcc?.NAME
 
     }, [accountData])
 
     const findAccCode = useCallback((id) => {
-        setLoading(true);
         const findedAcc = accountData?.find(item => item.ID === id);
-        setLoading(false);
         return findedAcc?.GENERICID;
 
     }, [accountData])
 
     const navigate = useNavigate();
-
-    // findName();
 
     const columns = useMemo(() => [
         {
@@ -103,7 +96,7 @@ export default function VoucherTable() {
             accessor: "Actions",
             Cell: ({ row }) => (
                 <div className="action-icons">
-                    <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => navigate(`/AddVoucher/${row?.original?.Id}`)} />
+                    <CiEdit style={{ cursor: 'pointer', marginRight: '15px' }} size={12} onClick={() => navigate(`/AddVoucher/${voucherType}/${row?.original?.Id}`)} />
                     <CiTrash style={{ cursor: 'pointer' }} onClick={() => handleDelete(row?.original?.Id)} />
                 </div>
             )

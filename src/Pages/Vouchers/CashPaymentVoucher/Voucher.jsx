@@ -1,9 +1,9 @@
 import React from 'react'
-import Sidebar from '../../Components/Navigation/Sidebar/Sidebar';
-import SelectAdd from '../../Components/OtherComponents/SelectAdd/SelectAdd';
-import VoucherTable from "../../Components/AllTable/VoucherTable/VoucherTable";
+import Sidebar from '../../../Components/Navigation/Sidebar/Sidebar';
+import SelectAdd from '../../../Components/OtherComponents/SelectAdd/SelectAdd';
+import VoucherTable from "../../../Components/AllTable/VoucherTable/VoucherTable";
 import { useSelector } from 'react-redux';
-import Navbar from '../../Components/Navigation/Navbar/Navbar';
+import Navbar from '../../../Components/Navigation/Navbar/Navbar';
 
 export default function Voucher() {
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
@@ -14,8 +14,8 @@ export default function Voucher() {
                 <Sidebar />
                 <div className='container-1'>
                     <Navbar text='Cash Payment' />
-                    <SelectAdd accountType='Add Voucher' />
-                    <VoucherTable />
+                    <SelectAdd accountType='Add Voucher' voucherType={371} />
+                    <VoucherTable voucherType={371} />
                 </div>
             </div>
         </div>
