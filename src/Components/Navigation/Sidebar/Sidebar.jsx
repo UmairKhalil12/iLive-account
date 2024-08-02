@@ -23,7 +23,7 @@ export default function Sidebar() {
                 { icon: <CiBoxList size={17} onClick={() => navigate("/CashRecieveVoucher")} />, text: "Cash Receipt", onclick: () => { navigate("/CashRecieveVoucher") } },
                 { icon: <CiBoxList size={17} onClick={() => navigate("/BankPaymentVoucher")}  />, text: "Bank Payment" , onclick :() => navigate("/BankPaymentVoucher")},
                 { icon: <CiBoxList size={17} onClick={()=> navigate("/BankRecieveVoucher")} />, onclick:()=>navigate('/BankRecieveVoucher') ,text: "Bank Receipt" },
-                { icon: <CiBoxList size={17} />, text: "Journal Voucher" },
+                { icon: <CiBoxList size={17} onClick={()=> navigate("/JournalVoucher")} />, text: "Journal Voucher" , onclick : ()=> navigate("/JournalVoucher")} ,
                 { icon: <CiBoxList size={17} />, text: "Voucher Junction" },
                 { icon: <CiBoxList size={17} />, text: "Exchange Rate Setup" },
                 { icon: <CiBoxList size={17} />, text: "Statement" },

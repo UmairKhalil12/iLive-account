@@ -56,7 +56,7 @@
     width: 310px;
 }
 
-.form-group input:disabled {
+.form-group input:disabled , .form-group-margin input:disabled {
     cursor: not-allowed;
 }
 

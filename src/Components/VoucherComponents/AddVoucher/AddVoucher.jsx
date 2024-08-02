@@ -34,6 +34,12 @@ export default function AddVoucher() {
     };
 
     const handleSubmit = async () => {
+        const totalCredit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.credit) || 0), 0);
+        const totalDebit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
+        if (totalCredit !== totalDebit) {
+            window.alert('Total credit and debit amounts must be equal.');
+            return;
+        }
         const combinedData = { masterVoucherData, formDetailData };
         console.log('combine data', combinedData);
         const details = formDetailData?.map((data) => ({
@@ -132,22 +138,49 @@ export default function AddVoucher() {
         }
     }, [id]);
 
+    const textRendering = () => {
+        console.log(RecSourceId, 'text rendering recSourceID');
+        if (RecSourceId == 371) {
+            return 'Cash Payment'
+        }
+        else if (RecSourceId == 372) {
+            return 'Cash Recieve'
+        }
+
+        else if (RecSourceId == 373) {
+            return 'Bank Payment'
+        }
+        else if (RecSourceId == 374) {
+            return 'Bank Recieve'
+        }
+        else if (RecSourceId == 375) {
+            return 'Journal Voucher'
+        }
+        else {
+            return 'Voucher'
+        }
+    }
+
     return (
         <>
             {loading ? <Loader /> :
                 <div className={`accounting-page ${isSubmenuVisible ? 'accounting-page-margin' : ''}`}>
                     <Sidebar />
                     <div className='container-1'>
-                        <Navbar text='Cash Payment' />
+                        <Navbar text={textRendering()} />
                         <ButtonsDiv onSubmit={handleSubmit} />
                         <br /> <br />
                         <MasterVoucher
                             data={id ? masterVoucherData : null}
-                            onDataChange={handleMasterVoucherChange} />
+                            onDataChange={handleMasterVoucherChange}
+                            JournalVoucher={RecSourceId == 375 ? true : false}
+                        />
+
                         <br /> <br />
                         <FormDetailVoucher
                             data={id ? formDetailData : null}
                             onDataChange={handleFormDetailChange}
+                            JournalVoucher={RecSourceId == 375 ? true : false}
                         />
                     </div>
                 </div>

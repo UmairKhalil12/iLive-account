@@ -10,6 +10,7 @@ import AddVoucher from "../Components/VoucherComponents/AddVoucher/AddVoucher";
 import CashRecieveVoucherPage from '../Pages/Vouchers/CashRecieveVoucherPage/CashRecieveVoucherPage';
 import BankRecieveVoucher from "../Pages/Vouchers/BankRecieveVoucher/BankRecieveVoucher";
 import BankPaymentVoucher from "../Pages/Vouchers/BankPaymentVoucher/BankPaymentVoucher";
+import JournalVoucher from '../Pages/Vouchers/JournalVoucher/JournalVoucher';
 
 export default function Routing() {
     return (
@@ -27,6 +28,7 @@ export default function Routing() {
                 <Route path='/CashRecieveVoucher' element={<CashRecieveVoucherPage />} />
                 <Route path='/BankPaymentVoucher' element={<BankPaymentVoucher />} />
                 <Route path='/BankRecieveVoucher' element={<BankRecieveVoucher />} />
+                <Route path = "/JournalVoucher" element = {<JournalVoucher />} />
             </Routes>
         </BrowserRouter>
     )

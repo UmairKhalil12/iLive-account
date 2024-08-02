@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import "./MasterVoucher.css";
 import { GET_METHOD } from '../../../api/api';
 
-export default function MasterVoucher({ onDataChange, data }) {
+export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const color = useSelector((state) => state.user.color);
 
