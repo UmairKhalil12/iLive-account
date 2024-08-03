@@ -28,7 +28,7 @@ export default function Routing() {
                 <Route path='/CashRecieveVoucher' element={<CashRecieveVoucherPage />} />
                 <Route path='/BankPaymentVoucher' element={<BankPaymentVoucher />} />
                 <Route path='/BankRecieveVoucher' element={<BankRecieveVoucher />} />
-                <Route path = "/JournalVoucher" element = {<JournalVoucher />} />
+                <Route path="/JournalVoucher" element={<JournalVoucher />} />
             </Routes>
         </BrowserRouter>
     )

@@ -7,7 +7,7 @@ import { CiTrash } from "react-icons/ci";
 
 export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }) {
 
-    console.log(JournalVoucher, 'formdetailvoucherfomr')
+    // console.log(JournalVoucher, 'formdetailvoucherfomr')
 
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const color = useSelector((state) => state.user.color);
@@ -17,8 +17,8 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
     const [accounts, setAccounts] = useState([]);
 
     const initialField = JournalVoucher
-        ? { account: '', narration: '', credit: '', debit: '', accountGenric: '', currency: '', selected: '', updatingId: null }
-        : { account: '', narration: '', credit: '', accountGenric: '', currency: '', selected: '', updatingId: null };
+        ? { account: '', narration: '', credit: 0, debit: 0, accountGenric: '', currency: '', selected: '', updatingId: 0 }
+        : { account: '', narration: '', credit: '', accountGenric: '', currency: '', selected: '', updatingId: 0 };
 
     const [fields, setFields] = useState([initialField]);
 
@@ -26,7 +26,14 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
         try {
             const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
             if (res == null) {
-                setAccounts([{ ID: 12, NAME: 'hello', GENERICID: 'abc-01', GUID: 'guid-01s' }])
+                setAccounts([
+                    { ID: 12, NAME: 'hello', GENERICID: 'abc-01', GUID: 'guid-01' },
+                    { ID: 13, NAME: 'hello1', GENERICID: 'abc-02', GUID: 'guid-02' },
+                    { ID: 14, NAME: 'hello2', GENERICID: 'abc-03', GUID: 'guid-03' },
+                    { ID: 15, NAME: 'hello3', GENERICID: 'abc-04', GUID: 'guid-04' },
+                    { ID: 16, NAME: 'hello4', GENERICID: 'abc-05', GUID: 'guid-05' },
+                    { ID: 17, NAME: 'hello5', GENERICID: 'abc-06', GUID: 'guid-06' }
+                ]);
             }
             else {
                 setAccounts(res);
@@ -57,6 +64,12 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
         const { name, value } = event.target;
         const updatedFields = [...fields];
         updatedFields[index][name] = value;
+
+        if (name === 'credit' || name === 'debit') {
+            updatedFields[index][name] = value === '' ? '' : Number(value);
+        } else {
+            updatedFields[index][name] = value;
+        }
 
         if (name === 'selected') {
             const selectedAccount = accounts.find(acc => acc.GUID === value);

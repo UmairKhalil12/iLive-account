@@ -29,25 +29,37 @@ export default function AddVoucher() {
         setMasterVoucherData(data);
     };
 
+    // console.log(masterVoucherData , 'masterVoucherData');
+
     const handleFormDetailChange = (data) => {
         setFormDetailData(data);
     };
 
     const handleSubmit = async () => {
-        const totalCredit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.credit) || 0), 0);
-        const totalDebit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
-        if (totalCredit !== totalDebit) {
-            window.alert('Total credit and debit amounts must be equal.');
-            return;
+
+        if (RecSourceId == 375) {
+            const totalCredit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.credit) || 0), 0);
+            const totalDebit = formDetailData.reduce((sum, item) => sum + (parseFloat(item.debit) || 0), 0);
+            if (totalCredit !== totalDebit) {
+                window.alert('Total credit and debit amounts must be equal.');
+                return;
+            }
         }
         const combinedData = { masterVoucherData, formDetailData };
         console.log('combine data', combinedData);
+
+        const TotalAmount = formDetailData?.reduce((sum, data) => {
+            return sum + (parseInt(data?.credit) || 0);
+        }, 0);
+
+        // console.log(TotalAmount , 'totalAmount'); 
+
         const details = formDetailData?.map((data) => ({
             "id": id ? data?.updatingId : 0,
             "accountId": data?.account,
             "accountGenId": data?.selected,
-            "debit": null,
-            "credit": null,
+            "debit": RecSourceId == 371 || RecSourceId == 373 ? data?.credit : RecSourceId == 375 ? data?.debit : 0,
+            "credit": RecSourceId == 372 || RecSourceId == 374 ? data?.credit : RecSourceId == 375 ? data?.credit : 0,
             "currencyId": data?.currency,
             "exchangeRate": 105,
             "chequeNo": null,
@@ -55,7 +67,7 @@ export default function AddVoucher() {
             "chequeStatus": true,
             "projectId": 1,
             "narration": data?.narration,
-            "costCenter": data?.credit
+            "costCenter": null
         }));
 
         const body = {
@@ -65,18 +77,18 @@ export default function AddVoucher() {
                     "companyId": 100,
                     "locationId": 1,
                     "campusId": 1,
-                    "recSourceId": RecSourceId,
+                    "recSourceId": parseInt(RecSourceId),
                     "voucherDate": masterVoucherData?.voucherDate,
                     "accountId": masterVoucherData?.accountId,
                     "accountGenId": masterVoucherData?.accountGeneric,
-                    "debit": null,
-                    "credit": null,
-                    "currencyId": masterVoucherData?.currency,
+                    "debit": RecSourceId == 372 || RecSourceId == 374 ? TotalAmount : null,
+                    "credit": RecSourceId == 371 || RecSourceId == 373 ? TotalAmount : null,
+                    "currencyId": parseInt(masterVoucherData?.currency),
                     "exchangeRate": 100,
                     "narration": masterVoucherData?.particulars,
                     "isStatus": 1,
                     "userId": 10131,
-                    "id": id ? id : 0,
+                    "id": id ? parseInt(id) : 0,
                     "details": details
                 }
             ]
@@ -90,7 +102,23 @@ export default function AddVoucher() {
 
             setPostData(res);
             console.log('add voucher', postData);
-            navigate("/voucher");
+            if (RecSourceId == 371) {
+                navigate("/voucher");
+            }
+            else if (RecSourceId == 372) {
+                navigate("/CashRecieveVoucher")
+            }
+
+            else if (RecSourceId == 373) {
+                navigate("/BankPaymentVoucher")
+            }
+            else if (RecSourceId == 374) {
+                navigate("/BankRecieveVoucher")
+            }
+            else if (RecSourceId == 375) {
+                navigate("/JournalVoucher")
+            }
+
         } catch (error) {
             console.log("error", error.message);
         }
@@ -98,7 +126,7 @@ export default function AddVoucher() {
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(id, 'updation id');
+            // console.log(id, 'updation id');
             const res = await GET_METHOD_LOCAL(`/api/Voucher/GetVoucherMasterAndDetailById?id=${id}&RecSourceId=${RecSourceId}`);
             console.log(res, 'get voucher by id res');
             if (res) {
@@ -115,7 +143,8 @@ export default function AddVoucher() {
                 const details = res?.map((d) => ({
                     account: d.AccountId1,
                     accountGenric: d.GenricNo1,
-                    credit: d.CostCenter1,
+                    credit: d?.AccountCredit1,
+                    debit : d?.AccountDebit1,
                     currency: d.CurrencyId1,
                     narration: d.Narration1,
                     selected: d.AccountGenricNo1,
@@ -139,7 +168,8 @@ export default function AddVoucher() {
     }, [id]);
 
     const textRendering = () => {
-        console.log(RecSourceId, 'text rendering recSourceID');
+        // console.log(RecSourceId, 'text rendering recSourceID');
+
         if (RecSourceId == 371) {
             return 'Cash Payment'
         }

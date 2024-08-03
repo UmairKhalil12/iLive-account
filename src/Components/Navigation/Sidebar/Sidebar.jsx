@@ -84,8 +84,8 @@ export default function Sidebar() {
                                             }
                                         }}
                                     >
-                                        <span>{subitem.icon} </span>
-                                        <p style={{ marginLeft: '5px' }} onClick={subitem?.onclick} >{subitem.text}</p>
+                                        <span onClick={subitem.onclick}>{subitem.icon} </span>
+                                        <p style={{ marginLeft: '5px' }} onClick={subitem.onclick}  >{subitem.text}</p>
                                         {subitem.submenu && (
                                             <span className="menu-arrow">
                                                 {nestedMenu === subindex ? <FaChevronUp /> : <FaChevronDown />}

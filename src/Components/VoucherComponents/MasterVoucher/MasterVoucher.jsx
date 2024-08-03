@@ -11,21 +11,28 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
     const [voucherNo, setVoucherNo] = useState("");
     const [voucherDate, setVoucherDate] = useState("");
     const [status, setStatus] = useState("");
-    const [currency, setCurrency] = useState("");
+    const [currency, setCurrency] = useState();
     const [exchangeRate, setExchangeRate] = useState("");
     const [particulars, setParticulars] = useState("");
     const [accountHead, setAccountHead] = useState("");
-    const [accountId, setAccountId] = useState("");
+    const [accountId, setAccountId] = useState(0);
     const [accountGeneric, setAccountGeneric] = useState("");
     const [genericNo, setGenericNo] = useState("");
 
-    // console.log('data masterVoucher', data)
+    // console.log('masterVoucher', JournalVoucher);
 
     const fetchAllAccounts = async () => {
         try {
             const res = await GET_METHOD('/Api/AccountsApi/getAllAccounts?LocationId=1&CampusId=1');
             if (res == null) {
-                setAccounts([])
+                setAccounts([
+                    { ID: 12, NAME: 'hello', GENERICID: 'abc-01', GUID: 'guid-01' },
+                    { ID: 13, NAME: 'hello1', GENERICID: 'abc-02', GUID: 'guid-02' },
+                    { ID: 14, NAME: 'hello2', GENERICID: 'abc-03', GUID: 'guid-03' },
+                    { ID: 15, NAME: 'hello3', GENERICID: 'abc-04', GUID: 'guid-04' },
+                    { ID: 16, NAME: 'hello4', GENERICID: 'abc-05', GUID: 'guid-05' },
+                    { ID: 17, NAME: 'hello5', GENERICID: 'abc-06', GUID: 'guid-06' }
+                ]);
             }
             else {
                 setAccounts(res);
@@ -53,6 +60,8 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
 
     }, [voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead]);
 
+
+
     const handleChange = (event) => {
         const selectedOption = event.target.value;
         const selectedAccount = accounts.find(acc => acc.GUID === selectedOption);
@@ -61,15 +70,17 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
         setCurrency(102);
         setAccountGeneric(selectedAccount?.GUID);
         setGenericNo(selectedAccount?.GENERICID);
-
     };
+
+    const className = JournalVoucher ? 'form-group-journal-master' : 'form-group';
+    const marginClassName = JournalVoucher ? 'form-group-journal-master-margin' : 'form-group-margin';
 
     return (
         <div className='add-voucher'>
             <h4>Add Payment Voucher</h4>
             <div className='add-voucher-2'>
                 <div className='form-section'>
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
+                    <div className={isSubmenuVisible ? marginClassName : className}>
                         <label>Voucher No</label>
                         <input
                             type='text'
@@ -81,7 +92,7 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                         />
                     </div>
 
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
+                    <div className={isSubmenuVisible ? marginClassName : className}>
                         <label>Date</label>
                         <input
                             type='date'
@@ -91,7 +102,7 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                         />
                     </div>
 
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
+                    <div className={isSubmenuVisible ? marginClassName : className}>
                         <label>Status</label>
                         <input
                             placeholder='1'
@@ -101,49 +112,71 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                             style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
                         />
                     </div>
+
+                    {JournalVoucher ?
+                        <div className={isSubmenuVisible ? marginClassName : className}>
+                            <label>Currency</label>
+                            <select
+                                value={currency}
+                                onChange={(e) => { setCurrency(e.target.value) }}
+                                style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
+                            >
+                                <option value=''>Currency</option>
+                                <option key={102} value={102}>USD</option>
+                                <option key={101} value={101}>PKR</option>
+                            </select>
+                        </div> : null
+                    }
+
                 </div>
 
                 <div className='form-section'>
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
-                        <label>Account Head</label>
-                        <select
-                            value={accountHead}
-                            onChange={handleChange}
-                            style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
-                        >
-                            <option value=''>Select Account</option>
-                            {accounts?.map((acc) => (
-                                <option key={acc.ID} value={acc.GUID}>
-                                    {acc.GENERICID} - {acc.NAME}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    {JournalVoucher ? null :
+                        <div className={isSubmenuVisible ? marginClassName : className}>
+                            <label>Account Head</label>
+                            <select
+                                value={accountHead}
+                                onChange={handleChange}
+                                style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
+                            >
+                                <option value=''>Select Account</option>
+                                {accounts?.map((acc) => (
+                                    <option key={acc.ID} value={acc.GUID}>
+                                        {acc.GENERICID} - {acc.NAME}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    }
+                    {JournalVoucher ? null :
+                        <div className={isSubmenuVisible ? marginClassName : className}>
+                            <label>Currency</label>
+                            <input
+                                type='text'
+                                placeholder='USD'
+                                disabled
+                                value={currency}
+                                style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
+                            />
+                        </div>
+                    }
 
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
-                        <label>Currency</label>
-                        <input
-                            type='text'
-                            placeholder='USD'
-                            disabled
-                            value={currency}
-                            style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
-                        />
-                    </div>
+                    {JournalVoucher ? null :
+                        <div className={isSubmenuVisible ? marginClassName : className}>
+                            <label>Exchange Rate</label>
+                            <input
+                                placeholder='1'
+                                disabled
+                                value={exchangeRate}
+                                onChange={(e) => setExchangeRate(e.target.value)}
+                                style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
+                            />
+                        </div>
+                    }
 
-                    <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
-                        <label>Exchange Rate</label>
-                        <input
-                            placeholder='1'
-                            disabled
-                            value={exchangeRate}
-                            onChange={(e) => setExchangeRate(e.target.value)}
-                            style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
-                        />
-                    </div>
                 </div>
 
-                <div className={isSubmenuVisible ? 'form-group-margin' : 'form-group'}>
+                <div >
                     <label>Particulars</label>
                     <textarea
                         className='particulars'

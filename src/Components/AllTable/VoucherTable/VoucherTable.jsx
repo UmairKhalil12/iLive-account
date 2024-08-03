@@ -35,7 +35,7 @@ export default function VoucherTable({ voucherType }) {
     useEffect(() => {
         const fetchData = async () => {
             if (voucherType) {
-                const res = await GET_METHOD_LOCAL(`/api/Voucher/GetAllVouchers?RecSourceId=${voucherType}`);
+                const res = await GET_METHOD_LOCAL(`/api/Voucher/GetVouchersByRecSourceId?RecSourceId=${voucherType}`);
                 if (res == null) {
                     setData([])
                 }
