@@ -8,16 +8,14 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
     const color = useSelector((state) => state.user.color);
 
     const [accounts, setAccounts] = useState([]);
-    const [voucherNo, setVoucherNo] = useState("");
+
     const [voucherDate, setVoucherDate] = useState("");
-    const [status, setStatus] = useState("");
-    const [currency, setCurrency] = useState();
-    const [exchangeRate, setExchangeRate] = useState("");
+    const [currency, setCurrency] = useState(102);
     const [particulars, setParticulars] = useState("");
     const [accountHead, setAccountHead] = useState("");
     const [accountId, setAccountId] = useState(0);
     const [accountGeneric, setAccountGeneric] = useState("");
-    const [genericNo, setGenericNo] = useState("");
+    // const [genericNo, setGenericNo] = useState("");
 
     // console.log('masterVoucher', JournalVoucher);
 
@@ -49,16 +47,23 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
 
     useEffect(() => {
         if (data) {
-            setAccountHead(data?.accountGeneric || "");
-            setVoucherDate(data.voucherDate?.split('T')[0] || "");
-            setParticulars(data?.particulars || "");
+            console.log('data updt MV', data);
+            // console.log(data.AccountGenricNo, data.voucherDate, data.CurrencyId, data.AccountId, data.particulars);
+            setAccountHead(data?.accountGeneric);
+            setVoucherDate(data.voucherDate?.split('T')[0]);
+            setParticulars(data?.particulars);
+            setAccountId(data?.accountId);
+            setAccountGeneric(data?.accountGeneric);
+            setCurrency(data?.currency);
+
         }
     }, []);
 
     useEffect(() => {
-        onDataChange({ voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead });
+        onDataChange({ voucherDate, currency, particulars, accountId, accountGeneric, accountHead });
+        console.log('update checking', { accountId, accountGeneric, voucherDate, currency, particulars });
 
-    }, [voucherDate, currency, particulars, accountId, accountGeneric, genericNo, accountHead]);
+    }, [voucherDate, currency, particulars, accountId, accountGeneric, accountHead]);
 
 
 
@@ -69,7 +74,7 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
         setAccountId(selectedAccount?.ID);
         setCurrency(102);
         setAccountGeneric(selectedAccount?.GUID);
-        setGenericNo(selectedAccount?.GENERICID);
+        // setGenericNo(selectedAccount?.GENERICID);
     };
 
     const className = JournalVoucher ? 'form-group-journal-master' : 'form-group';
@@ -86,8 +91,6 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                             type='text'
                             placeholder='0'
                             disabled
-                            value={voucherNo}
-                            onChange={(e) => setVoucherNo(e.target.value)}
                             style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
                         />
                     </div>
@@ -107,8 +110,6 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                         <input
                             placeholder='1'
                             disabled
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
                             style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
                         />
                     </div>
@@ -167,8 +168,6 @@ export default function MasterVoucher({ onDataChange, data, JournalVoucher }) {
                             <input
                                 placeholder='1'
                                 disabled
-                                value={exchangeRate}
-                                onChange={(e) => setExchangeRate(e.target.value)}
                                 style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
                             />
                         </div>

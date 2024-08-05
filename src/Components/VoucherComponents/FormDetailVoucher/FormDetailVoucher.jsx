@@ -5,20 +5,16 @@ import { GET_METHOD } from '../../../api/api';
 import { FaPlus } from "react-icons/fa6";
 import { CiTrash } from "react-icons/ci";
 
-export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }) {
-
-    // console.log(JournalVoucher, 'formdetailvoucherfomr')
+export default function FormDetailVoucher({ onDataChange, data, JournalVoucher, RecSourceId }) {
 
     const isSubmenuVisible = useSelector((state) => state.user.isSubmenuVisible);
     const color = useSelector((state) => state.user.color);
 
-    // console.log('data Form detail voucher', data)
-
     const [accounts, setAccounts] = useState([]);
 
-    const initialField = JournalVoucher
+    const initialField = JournalVoucher === true
         ? { account: '', narration: '', credit: 0, debit: 0, accountGenric: '', currency: '', selected: '', updatingId: 0 }
-        : { account: '', narration: '', credit: '', accountGenric: '', currency: '', selected: '', updatingId: 0 };
+        : { account: '', narration: '', credit: 0, accountGenric: '', currency: '', selected: '', updatingId: 0 };
 
     const [fields, setFields] = useState([initialField]);
 
@@ -50,36 +46,53 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
 
     useEffect(() => {
         onDataChange(fields);
-        console.log(fields);
     }, [fields, onDataChange]);
 
     useEffect(() => {
         if (data) {
             setFields(data);
         }
+        console.log(fields)
 
     }, []);
 
     const handleFieldChange = (index, event) => {
         const { name, value } = event.target;
         const updatedFields = [...fields];
-        updatedFields[index][name] = value;
 
-        if (name === 'credit' || name === 'debit') {
-            updatedFields[index][name] = value === '' ? '' : Number(value);
-        } else {
+        if (name === 'narration') {
             updatedFields[index][name] = value;
         }
 
         if (name === 'selected') {
             const selectedAccount = accounts.find(acc => acc.GUID === value);
-            updatedFields[index]['account'] = selectedAccount?.ID;
+            updatedFields[index]['account'] = selectedAccount?.ID || '';
+            updatedFields[index]['accountGenric'] = selectedAccount?.GENERICID || '';
             updatedFields[index]['currency'] = 102;
-            updatedFields[index]['accountGenric'] = selectedAccount?.GENERICID;
+            updatedFields[index]['selected'] = value;
         }
 
+        if (JournalVoucher) {
+            if (name == 'credit' || name == 'debit') {
+                updatedFields[index][name] = value === '' ? '' : Number(value);
+            }
+        }
+        else {
+            if (name === 'credit') {
+                updatedFields[index][name] = value === '' ? '' : Number(value);
+            }
+            else if (name === 'debit') {
+                updatedFields[index][name] = value === '' ? '' : Number(value);
+            }
+            else {
+                updatedFields[index][name] = value;
+            }
+
+        }
+
+        // Update state
         setFields(updatedFields);
-        console.log(fields[index].account);
+        console.log('formDetail', fields);
     };
 
     const addField = () => {
@@ -91,8 +104,20 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
         setFields(updatedFields);
     };
 
-    const JournalClassName = JournalVoucher ? 'form-group-journal ' : 'form-group'
-    const JournalClassNameMargin = JournalVoucher ? 'form-group-journal-margin' : 'form-group-margin'
+    const JournalClassName = JournalVoucher ? 'form-group-journal ' : 'form-group';
+    const JournalClassNameMargin = JournalVoucher ? 'form-group-journal-margin' : 'form-group-margin';
+
+    const renderAmountValue = (field) => {
+        if (JournalVoucher) {
+            return field.credit;
+        }
+        if (RecSourceId == 371 || RecSourceId == 373) {
+            return field.debit;
+        }
+        if (RecSourceId == 372 || RecSourceId == 374) {
+            return field.credit;
+        }
+    };
 
     return (
         <div>
@@ -130,36 +155,36 @@ export default function FormDetailVoucher({ onDataChange, data, JournalVoucher }
                         <label>{JournalVoucher ? 'Credit' : 'Amount'}</label>
                         <input
                             type='number'
-                            name='credit'
-                            value={field.credit}
-                            disabled={field.debit > 0}
+                            name={RecSourceId == 371 || RecSourceId == 373 ? 'debit' : 'credit'}
+                            value={renderAmountValue(field)}
+                            disabled={JournalVoucher ? field.debit > 0 : false}
                             onChange={(e) => handleFieldChange(index, e)}
                             style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
                         />
                     </div>
 
-                    {JournalVoucher ? <div className={isSubmenuVisible ? JournalClassNameMargin : JournalClassName}>
-                        <label>Debit</label>
-                        <input
-                            type='number'
-                            name='debit'
-                            value={field.debit}
-                            disabled={field.credit > 0}
-                            onChange={(e) => handleFieldChange(index, e)}
-                            style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
-                        />
-                    </div> : null}
+                    {JournalVoucher && (
+                        <div className={isSubmenuVisible ? JournalClassNameMargin : JournalClassName}>
+                            <label>Debit</label>
+                            <input
+                                type='number'
+                                name='debit'
+                                value={field.debit}
+                                disabled={JournalVoucher ? field.credit > 0 : false}
+                                onChange={(e) => handleFieldChange(index, e)}
+                                style={color ? {} : { border: "0.5px solid var(--table-border-color)" }}
+                            />
+                        </div>
+                    )}
 
                     <div className={isSubmenuVisible ? JournalClassNameMargin : 'form-group actions-group'}>
                         <label>Actions</label>
                         <div className='action-btns'>
                             {JournalVoucher ? field.account && field.narration && (field.credit || field.debit) && (
                                 <FaPlus className='btn-svg' onClick={addField} />
-                            ) :
-                                field.account && field.narration && field.credit && (
-                                    <FaPlus className='btn-svg' onClick={addField} />
-                                )
-                            }
+                            ) : field.account && field.narration && (field.credit || field.debit) && (
+                                <FaPlus className='btn-svg' onClick={addField} />
+                            )}
 
                             {fields.length > 1 && (
                                 <CiTrash className='btn-svg' onClick={() => removeField(index)} />

@@ -18,12 +18,12 @@ export default function Sidebar() {
     const menuItems = [
         {
             icon: <MdOutlineAccountBalance size={24} />, title: "Accounts", submenu: [
-                { icon: <CiBoxList size={17} onClick={() => navigate("/")} />, text: "Account List", onclick: () => { navigate("/") } },
-                { icon: <CiBoxList size={17} onClick={() => navigate("/voucher")} />, text: "Cash Payment", onclick: () => { navigate("/voucher") } },
-                { icon: <CiBoxList size={17} onClick={() => navigate("/CashRecieveVoucher")} />, text: "Cash Receipt", onclick: () => { navigate("/CashRecieveVoucher") } },
-                { icon: <CiBoxList size={17} onClick={() => navigate("/BankPaymentVoucher")}  />, text: "Bank Payment" , onclick :() => navigate("/BankPaymentVoucher")},
-                { icon: <CiBoxList size={17} onClick={()=> navigate("/BankRecieveVoucher")} />, onclick:()=>navigate('/BankRecieveVoucher') ,text: "Bank Receipt" },
-                { icon: <CiBoxList size={17} onClick={()=> navigate("/JournalVoucher")} />, text: "Journal Voucher" , onclick : ()=> navigate("/JournalVoucher")} ,
+                { icon: <CiBoxList size={17} onClick={() => navigate("/")} />, text: "Account List", onclick: () => navigate("/") },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/voucher")} />, text: "Cash Payment", onclick: () => navigate("/voucher") },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/CashRecieveVoucher")} />, text: "Cash Receipt", onclick: () => navigate("/CashRecieveVoucher") },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/BankPaymentVoucher")} />, text: "Bank Payment", onclick: () => navigate("/BankPaymentVoucher") },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/BankRecieveVoucher")} />, onclick: () => navigate('/BankRecieveVoucher'), text: "Bank Receipt" },
+                { icon: <CiBoxList size={17} onClick={() => navigate("/JournalVoucher")} />, text: "Journal Voucher", onclick: () => navigate("/JournalVoucher") },
                 { icon: <CiBoxList size={17} />, text: "Voucher Junction" },
                 { icon: <CiBoxList size={17} />, text: "Exchange Rate Setup" },
                 { icon: <CiBoxList size={17} />, text: "Statement" },

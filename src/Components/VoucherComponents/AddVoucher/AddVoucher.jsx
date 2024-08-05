@@ -29,8 +29,6 @@ export default function AddVoucher() {
         setMasterVoucherData(data);
     };
 
-    // console.log(masterVoucherData , 'masterVoucherData');
-
     const handleFormDetailChange = (data) => {
         setFormDetailData(data);
     };
@@ -48,17 +46,25 @@ export default function AddVoucher() {
         const combinedData = { masterVoucherData, formDetailData };
         console.log('combine data', combinedData);
 
-        const TotalAmount = formDetailData?.reduce((sum, data) => {
-            return sum + (parseInt(data?.credit) || 0);
-        }, 0);
+        let TotalAmount = 0;
+        if (RecSourceId == 371 || RecSourceId == 373) {
+            TotalAmount = formDetailData?.reduce((sum, data) => {
+                return sum + (parseInt(data?.debit) || 0);
+            }, 0);
+        }
+        if (RecSourceId == 372 || RecSourceId == 374) {
+            TotalAmount = formDetailData?.reduce((sum, data) => {
+                return sum + (parseInt(data?.credit) || 0);
+            }, 0);
+        }
 
-        // console.log(TotalAmount , 'totalAmount'); 
+        console.log(TotalAmount, 'totalAmount');
 
         const details = formDetailData?.map((data) => ({
             "id": id ? data?.updatingId : 0,
             "accountId": data?.account,
             "accountGenId": data?.selected,
-            "debit": RecSourceId == 371 || RecSourceId == 373 ? data?.credit : RecSourceId == 375 ? data?.debit : 0,
+            "debit": RecSourceId == 371 || RecSourceId == 373 ? data?.debit : RecSourceId == 375 ? data?.debit : 0,
             "credit": RecSourceId == 372 || RecSourceId == 374 ? data?.credit : RecSourceId == 375 ? data?.credit : 0,
             "currencyId": data?.currency,
             "exchangeRate": 105,
@@ -73,7 +79,6 @@ export default function AddVoucher() {
         const body = {
             "documents_": [
                 {
-                    "genricNo": masterVoucherData?.genericNo,
                     "companyId": 100,
                     "locationId": 1,
                     "campusId": 1,
@@ -93,6 +98,8 @@ export default function AddVoucher() {
                 }
             ]
         };
+
+        console.log(body, 'for debugging updation');
 
         try {
             console.log("posting voucher", body);
@@ -126,35 +133,43 @@ export default function AddVoucher() {
 
     useEffect(() => {
         const fetchData = async () => {
-            // console.log(id, 'updation id');
+
             const res = await GET_METHOD_LOCAL(`/api/Voucher/GetVoucherMasterAndDetailById?id=${id}&RecSourceId=${RecSourceId}`);
-            console.log(res, 'get voucher by id res');
+
             if (res) {
+                console.log(res, 'get voucher by id res');
+                console.log(res[0].AccountId, res[0].AccountGenricNo);
                 setMasterVoucherData({
                     voucherDate: res[0]?.VoucherDate,
                     currency: res[0]?.CurrencyId,
                     particulars: res[0]?.Narration,
-                    accountId: res[0]?.AccountId,
-                    accountGeneric: res[0]?.AccountGenricNo,
-                    genericNo: res[0]?.GenricNo,
-                    accountHead: res[0]?.AccountGenricNo
+                    accountId: res[0].AccountId,
+                    accountGeneric: res[0].AccountGenricNo,
+                    accountHead: res[0].AccountGenricNo,
                 });
 
-                const details = res?.map((d) => ({
-                    account: d.AccountId1,
-                    accountGenric: d.GenricNo1,
-                    credit: d?.AccountCredit1,
-                    debit : d?.AccountDebit1,
-                    currency: d.CurrencyId1,
-                    narration: d.Narration1,
-                    selected: d.AccountGenricNo1,
-                    updatingId: d.Id1
-                }));
+                const details = res?.map((d) => {
+                    const detail = {
+                        account: d.AccountId1,
+                        accountGenric: d.GenricNo1,
+                        currency: d.CurrencyId1,
+                        narration: d.Narration1,
+                        selected: d.AccountGenricNo1,
+                        updatingId: d.Id1
+                    };
+
+                    if (RecSourceId == 372 || RecSourceId == 374 || RecSourceId == 375) {
+                        detail.credit = d.AccountCredit1;
+                    }
+                    if (RecSourceId == 371 || RecSourceId == 373 || RecSourceId == 375) {
+                        detail.debit = d.AccountDebit1;
+                    }
+
+                    return detail;
+                });
 
                 setFormDetailData(details);
 
-                console.log(masterVoucherData);
-                console.log(formDetailData);
             }
             setLoading(false);
         };
@@ -211,6 +226,7 @@ export default function AddVoucher() {
                             data={id ? formDetailData : null}
                             onDataChange={handleFormDetailChange}
                             JournalVoucher={RecSourceId == 375 ? true : false}
+                            RecSourceId={RecSourceId}
                         />
                     </div>
                 </div>
